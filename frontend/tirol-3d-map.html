@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tirol 3D Map Viewer</title>
+    
+    <!-- Cesium CSS -->
+    <link href="https://cesium.com/downloads/cesiumjs/releases/1.95/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: #1a1a1a;
+            color: white;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        /* Header */
+        .header {
+            background: #2d2d2d;
+            padding: 15px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header h1 {
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .projection-info {
+            font-size: 12px;
+            color: #888;
+        }
+        
+        /* Main Layout */
+        .main-container {
+            display: flex;
+            height: calc(100vh - 60px);
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 320px;
+            background: #2d2d2d;
+            overflow-y: auto;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+        }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #404040;
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 12px;
+            background: none;
+            border: none;
+            color: #888;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+        
+        .tab:hover {
+            background: #353535;
+        }
+        
+        .tab.active {
+            background: #404040;
+            color: #4a9eff;
+            border-bottom: 2px solid #4a9eff;
+        }
+        
+        /* Tab Content */
+        .tab-content {
+            display: none;
+            padding: 20px;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 13px;
+            color: #ccc;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            background: #1a1a1a;
+            border: 1px solid #404040;
+            border-radius: 4px;
+            color: white;
+            font-size: 13px;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #4a9eff;
+        }
+        
+        /* Buttons */
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 10px;
+        }
+        
+        .btn-primary {
+            background: #4a9eff;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #357abd;
+        }
+        
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #059669;
+        }
+        
+        .btn-purple {
+            background: #8b5cf6;
+            color: white;
+        }
+        
+        .btn-purple:hover {
+            background: #7c3aed;
+        }
+        
+        .btn-secondary {
+            background: #404040;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #505050;
+        }
+        
+        .btn:disabled {
+            background: #2d2d2d;
+            color: #666;
+            cursor: not-allowed;
+        }
+        
+        /* Range Slider */
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            background: #404040;
+            border-radius: 3px;
+            outline: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            background: #4a9eff;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        
+        .range-value {
+            display: block;
+            margin-top: 6px;
+            font-size: 12px;
+            color: #4a9eff;
+            text-align: right;
+        }
+        
+        /* Info Boxes */
+        .info-box {
+            background: #353535;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+        }
+        
+        .info-box h4 {
+            font-size: 13px;
+            margin-bottom: 8px;
+            color: #4a9eff;
+        }
+        
+        .info-box p,
+        .info-box ul {
+            font-size: 12px;
+            color: #aaa;
+            line-height: 1.6;
+        }
+        
+        .info-box ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .info-box ul li {
+            padding: 4px 0;
+        }
+        
+        .warning-box {
+            background: rgba(251, 191, 36, 0.1);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+        }
+        
+        .warning-box h4 {
+            font-size: 13px;
+            margin-bottom: 8px;
+            color: #fbbf24;
+        }
+        
+        .warning-box ol {
+            font-size: 12px;
+            color: #aaa;
+            padding-left: 20px;
+        }
+        
+        /* Map Container */
+        #cesiumContainer {
+            flex: 1;
+            position: relative;
+        }
+        
+        /* Status Messages */
+        .status-message {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(42, 42, 42, 0.95);
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-size: 12px;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .status-message.show {
+            display: block;
+        }
+        
+        .status-success {
+            border-left: 3px solid #10b981;
+        }
+        
+        .status-error {
+            border-left: 3px solid #ef4444;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <h1>🗺️ Tirol 3D Map Viewer</h1>
+        <div class="projection-info">EPSG:31255 → WGS84 Reprojection</div>
+    </div>
+    
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('config')">⚙️ Config</button>
+                <button class="tab" onclick="switchTab('layers')">📚 Layers</button>
+                <button class="tab" onclick="switchTab('info')">ℹ️ Info</button>
+            </div>
+            
+            <!-- Config Tab -->
+            <div id="config-tab" class="tab-content active">
+                <h3 style="font-size: 16px; margin-bottom: 16px;">GeoServer Configuration</h3>
+                
+                <div class="form-group">
+                    <label>GeoServer URL</label>
+                    <input type="text" id="geoserverUrl" value="http://localhost:8888/geoserver">
+                </div>
+                
+                <div class="form-group">
+                    <label>Workspace</label>
+                    <input type="text" id="workspace" value="tirol">
+                </div>
+                
+                <div class="form-group">
+                    <label>Ortho Layer Name</label>
+                    <input type="text" id="orthoLayer" value="ortho_image">
+                </div>
+                
+                <div class="form-group">
+                    <label>DEM Layer Name</label>
+                    <input type="text" id="demLayer" value="dem">
+                </div>
+                
+                <div class="form-group">
+                    <label>Terrain Type</label>
+                    <select id="terrainType" onchange="updateTerrain()">
+                        <option value="world">Cesium World Terrain</option>
+                        <option value="ellipsoid">Flat (Ellipsoid)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Vertical Exaggeration</label>
+                    <input type="range" id="exaggeration" min="1" max="3" step="0.1" value="1.5" oninput="updateExaggeration()">
+                    <span class="range-value" id="exaggerationValue">1.5x</span>
+                </div>
+                
+                <button class="btn btn-primary" onclick="loadOrthoLayer()">
+                    🚀 Load Ortho Layer
+                </button>
+            </div>
+            
+            <!-- Layers Tab -->
+            <div id="layers-tab" class="tab-content">
+                <h3 style="font-size: 16px; margin-bottom: 16px;">Layer Control</h3>
+                
+                <button class="btn btn-secondary" id="toggleOrthoBtn" onclick="toggleOrtho()" disabled>
+                    👁️ Toggle Orthophoto
+                </button>
+                
+                <button class="btn btn-success" onclick="loadDEMAsImagery()">
+                    🏔️ Load DEM as Imagery
+                </button>
+                
+                <button class="btn btn-secondary" id="toggleDEMBtn" onclick="toggleDEM()" disabled>
+                    👁️ Toggle DEM
+                </button>
+                
+                <button class="btn btn-purple" onclick="flyToAOI()">
+                    🎯 Fly to Tirol
+                </button>
+            </div>
+            
+            <!-- Info Tab -->
+            <div id="info-tab" class="tab-content">
+                <h3 style="font-size: 16px; margin-bottom: 16px;">Information</h3>
+                
+                <div class="info-box">
+                    <h4>Projection Handling</h4>
+                    <p>Your data is in EPSG:31255 (MGI Austria GK Central). GeoServer will automatically reproject to EPSG:3857 or EPSG:4326 for web display via WMS.</p>
+                </div>
+                
+                <div class="info-box">
+                    <h4>Terrain vs Imagery</h4>
+                    <p>Currently using Cesium World Terrain for elevation. Your DEM can be displayed as colored imagery overlay. Converting DEM to Cesium terrain format requires additional processing.</p>
+                </div>
+                
+                <div class="info-box">
+                    <h4>Navigation Controls</h4>
+                    <ul>
+                        <li>• Left drag: Rotate view</li>
+                        <li>• Right drag: Zoom camera</li>
+                        <li>• Middle drag: Pan</li>
+                        <li>• Scroll wheel: Zoom in/out</li>
+                    </ul>
+                </div>
+                
+                <div class="warning-box">
+                    <h4>⚠️ Setup Checklist</h4>
+                    <ol>
+                        <li>Publish layers in GeoServer</li>
+                        <li>Enable CORS in GeoServer</li>
+                        <li>Verify layer names match</li>
+                        <li>Click "Load Ortho Layer"</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Map Container -->
+        <div id="cesiumContainer"></div>
+        
+        <!-- Status Message -->
+        <div id="statusMessage" class="status-message"></div>
+    </div>
+    
+    <!-- Cesium JavaScript -->
+    <script src="https://cesium.com/downloads/cesiumjs/releases/1.95/Build/Cesium/Cesium.js"></script>
+    
+    <script>
+        // Global variables
+        let viewer;
+        let orthoLayer = null;
+        let demLayer = null;
+        let orthoVisible = true;
+        let demVisible = false;
+        
+        // Initialize Cesium
+        Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJlYWE1OWUxNy1mMWZiLTQzYjYtYTQ0OS1kMWFjYmFkNjc5YzciLCJpZCI6NTc3MzMsImlhdCI6MTYyNzg0NTE4Mn0.XcKpgANiY19MC4bdFUXMVEBToBmqS8kuYpUlxJHYZxk';
+        
+        // Create viewer
+        viewer = new Cesium.Viewer('cesiumContainer', {
+            terrainProvider: Cesium.createWorldTerrain({
+                requestWaterMask: true,
+                requestVertexNormals: true
+            }),
+            baseLayerPicker: false,
+            geocoder: false,
+            homeButton: false,
+            sceneModePicker: true,
+            navigationHelpButton: true,
+            animation: false,
+            timeline: false,
+            fullscreenButton: true
+        });
+        
+        // Set initial vertical exaggeration
+        viewer.scene.verticalExaggeration = 1.5;
+        
+        // Fly to Tirol on load
+        flyToAOI();
+        
+        // Tab switching
+        function switchTab(tabName) {
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            // Add active class to selected tab
+            event.target.classList.add('active');
+            document.getElementById(tabName + '-tab').classList.add('active');
+        }
+        
+        // Update terrain
+        function updateTerrain() {
+            const terrainType = document.getElementById('terrainType').value;
+            
+            if (terrainType === 'ellipsoid') {
+                viewer.terrainProvider = new Cesium.EllipsoidTerrainProvider();
+                showStatus('Terrain set to flat ellipsoid', 'success');
+            } else if (terrainType === 'world') {
+                viewer.terrainProvider = Cesium.createWorldTerrain({
+                    requestWaterMask: true,
+                    requestVertexNormals: true
+                });
+                showStatus('Terrain set to Cesium World Terrain', 'success');
+            }
+        }
+        
+        // Update exaggeration
+        function updateExaggeration() {
+            const value = document.getElementById('exaggeration').value;
+            document.getElementById('exaggerationValue').textContent = value + 'x';
+            viewer.scene.verticalExaggeration = parseFloat(value);
+        }
+        
+        // Load ortho layer
+        function loadOrthoLayer() {
+            const geoserverUrl = document.getElementById('geoserverUrl').value;
+            const workspace = document.getElementById('workspace').value;
+            const orthoLayerName = document.getElementById('orthoLayer').value;
+            
+            try {
+                // Remove existing layer
+                if (orthoLayer) {
+                    viewer.imageryLayers.remove(orthoLayer, false);
+                }
+                
+                const wmsUrl = geoserverUrl + '/wms';
+                const provider = new Cesium.WebMapServiceImageryProvider({
+                    url: wmsUrl,
+                    layers: workspace + ':' + orthoLayerName,
+                    parameters: {
+                        format: 'image/png',
+                        transparent: true,
+                        version: '1.1.1'
+                    },
+                    credit: new Cesium.Credit('TIRIS Tirol')
+                });
+                
+                orthoLayer = viewer.imageryLayers.addImageryProvider(provider);
+                orthoVisible = true;
+                document.getElementById('toggleOrthoBtn').disabled = false;
+                
+                showStatus('✓ Ortho layer loaded successfully!', 'success');
+                
+                // Auto switch to layers tab
+                switchTab('layers');
+                document.querySelectorAll('.tab')[1].classList.add('active');
+                
+            } catch (error) {
+                console.error('Error loading ortho:', error);
+                showStatus('✗ Error loading ortho layer. Check console.', 'error');
+            }
+        }
+        
+        // Load DEM as imagery
+        function loadDEMAsImagery() {
+            const geoserverUrl = document.getElementById('geoserverUrl').value;
+            const workspace = document.getElementById('workspace').value;
+            const demLayerName = document.getElementById('demLayer').value;
+            
+            try {
+                // Remove existing layer
+                if (demLayer) {
+                    viewer.imageryLayers.remove(demLayer, false);
+                }
+                
+                const wmsUrl = geoserverUrl + '/wms';
+                const provider = new Cesium.WebMapServiceImageryProvider({
+                    url: wmsUrl,
+                    layers: workspace + ':' + demLayerName,
+                    parameters: {
+                        format: 'image/png',
+                        transparent: false,
+                        version: '1.1.1'
+                    },
+                    credit: new Cesium.Credit('TIRIS Tirol DEM')
+                });
+                
+                demLayer = viewer.imageryLayers.addImageryProvider(provider);
+                demVisible = true;
+                document.getElementById('toggleDEMBtn').disabled = false;
+                
+                showStatus('✓ DEM layer loaded as imagery!', 'success');
+                
+            } catch (error) {
+                console.error('Error loading DEM:', error);
+                showStatus('✗ Error loading DEM. Check layer name.', 'error');
+            }
+        }
+        
+        // Toggle ortho visibility
+        function toggleOrtho() {
+            if (orthoLayer) {
+                orthoVisible = !orthoVisible;
+                orthoLayer.show = orthoVisible;
+                showStatus(orthoVisible ? 'Ortho visible' : 'Ortho hidden', 'success');
+            }
+        }
+        
+        // Toggle DEM visibility
+        function toggleDEM() {
+            if (demLayer) {
+                demVisible = !demVisible;
+                demLayer.show = demVisible;
+                showStatus(demVisible ? 'DEM visible' : 'DEM hidden', 'success');
+            }
+        }
+        
+        // Fly to AOI
+        function flyToAOI() {
+            viewer.camera.flyTo({
+                destination: Cesium.Cartesian3.fromDegrees(11.39, 47.26, 50000),
+                orientation: {
+                    heading: Cesium.Math.toRadians(0),
+                    pitch: Cesium.Math.toRadians(-45),
+                    roll: 0.0
+                },
+                duration: 3
+            });
+        }
+        
+        // Show status message
+        function showStatus(message, type) {
+            const statusEl = document.getElementById('statusMessage');
+            statusEl.textContent = message;
+            statusEl.className = 'status-message show status-' + type;
+            
+            setTimeout(() => {
+                statusEl.classList.remove('show');
+            }, 4000);
+        }
+        
+        console.log('✓ 3D Map initialized successfully!');
+    </script>
+</body>
+</html>
