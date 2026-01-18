@@ -16,10 +16,10 @@ def main():
     Ingest initial baseline terrain data
     """
     
-    # Paths to your data (UPDATE THESE!)
-    dem_path = Path("data/raw/dem/your_dem.tif")
-    dtm_path = Path("data/raw/dtm/your_dtm.tif")  # Optional
-    ortho_path = Path("data/raw/ortho/your_ortho.tif")  # Optional
+    # Paths to data
+    dem_path = Path("data/raw/dem/merged_dsm_2022.tif")
+    dtm_path = Path("data/raw/dtm/merged_dtm_2022.tif")  
+    ortho_path = Path("data/raw/ortho/merged_ortho_2022.tif")  
     
     # Check files exist
     if not dem_path.exists():
@@ -27,9 +27,7 @@ def main():
         logger.error("Please update the paths in this script to point to your data")
         sys.exit(1)
     
-    logger.info("="*60)
     logger.info("Starting baseline terrain data ingestion")
-    logger.info("="*60)
     
     # Initialize ingestor
     ingestor = TerrainIngestor()
@@ -40,27 +38,27 @@ def main():
     if not is_valid:
         logger.error(f"DEM validation failed: {message}")
         sys.exit(1)
-    logger.info(f"✓ {message}")
+    logger.info(f"{message}")
     
     # Ingest data
     try:
         result = ingestor.ingest_baseline(
             dem_path=dem_path,
-            version_name="baseline_2024",
-            dtm_path=dtm_path if dtm_path.exists() else None,
-            ortho_path=ortho_path if ortho_path.exists() else None,
+            version_name="baseline_2022",
+            dtm_path=dtm_path,
+            ortho_path=ortho_path,
             source="initial_survey",
             metadata={
-                "survey_date": "2024-01-01",  # Update this
-                "provider": "Your Organization",
+                "survey_date": "2022",  
+                "provider": "https://www.tirol.gv.at/",
                 "notes": "Initial baseline dataset"
             }
         )
         
-        logger.info("✓ Terrain data processed successfully")
-        logger.info(f"  Version: {result['version_name']}")
-        logger.info(f"  Resolution: {result['resolution_m']:.2f}m")
-        logger.info(f"  Elevation range: {result['statistics']['min_elevation']:.1f}m "
+        logger.info("Terrain data processed successfully")
+        logger.info(f"Version: {result['version_name']}")
+        logger.info(f"Resolution: {result['resolution_m']:.2f}m")
+        logger.info(f"Elevation range: {result['statistics']['min_elevation']:.1f}m "
                    f"to {result['statistics']['max_elevation']:.1f}m")
         
         # Store in database
@@ -69,13 +67,11 @@ def main():
         try:
             repo = TerrainRepository(db)
             terrain_id = repo.create_snapshot(result)
-            logger.info(f"✓ Stored in database with ID: {terrain_id}")
+            logger.info(f"Stored in database with ID: {terrain_id}")
         finally:
             db.close()
         
-        logger.info("="*60)
         logger.info("Baseline ingestion completed successfully!")
-        logger.info("="*60)
         
     except Exception as e:
         logger.error(f"Error during ingestion: {str(e)}", exc_info=True)

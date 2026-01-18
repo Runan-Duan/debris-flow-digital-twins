@@ -43,8 +43,8 @@ class TerrainIngestor:
         Args:
             dem_path: Path to DEM file
             version_name: Unique version identifier
-            dtm_path: Optional DTM path
-            ortho_path: Optional orthophoto path
+            dtm_path: DTM path
+            ortho_path: orthophoto path
             source: Data source identifier
             metadata: Additional metadata
             
@@ -54,38 +54,29 @@ class TerrainIngestor:
         logger.info(f"Starting baseline ingestion: {version_name}")
         
         try:
-            # Validate and process DEM
+            # Validate and process DEM, DTM & ortho
             dem_info = self._process_raster(
                 dem_path, 
                 f"{version_name}_dem",
-                is_dem=True
             )
             
-            # Process DTM if provided
-            dtm_info = None
-            if dtm_path:
-                dtm_info = self._process_raster(
-                    dtm_path,
-                    f"{version_name}_dtm",
-                    is_dem=True
-                )
-            
-            # Process orthophoto if provided
-            ortho_info = None
-            if ortho_path:
-                ortho_info = self._process_raster(
-                    ortho_path,
-                    f"{version_name}_ortho",
-                    is_dem=False
-                )
+            dtm_info = self._process_raster(
+                dtm_path,
+                f"{version_name}_dtm",
+            )
+        
+            ortho_info = self._process_raster(
+                ortho_path,
+                f"{version_name}_ortho",
+            )
             
             # Prepare result
             result = {
                 "version_name": version_name,
                 "timestamp": datetime.utcnow(),
                 "dem_path": str(dem_info["output_path"]),
-                "dtm_path": str(dtm_info["output_path"]) if dtm_info else None,
-                "ortho_path": str(ortho_info["output_path"]) if ortho_info else None,
+                "dtm_path": str(dtm_info["output_path"]),
+                "ortho_path": str(ortho_info["output_path"]),
                 "resolution_m": dem_info["resolution"],
                 "epsg_code": self.target_epsg,
                 "extent_wgs84": dem_info["extent_wgs84"],
@@ -111,7 +102,6 @@ class TerrainIngestor:
         self,
         input_path: Path,
         output_name: str,
-        is_dem: bool = True
     ) -> Dict[str, Any]:
         """
         Process and standardize raster data
@@ -130,16 +120,15 @@ class TerrainIngestor:
             # Check if reprojection is needed
             if src.crs.to_epsg() != self.target_epsg:
                 logger.info(f"Reprojecting from {src.crs} to EPSG:{self.target_epsg}")
-                return self._reproject_raster(src, output_name, is_dem)
+                return self._reproject_raster(src, output_name)
             else:
                 logger.info("Raster already in target CRS, copying...")
-                return self._copy_raster(src, output_name, is_dem)
+                return self._copy_raster(src, output_name)
     
     def _reproject_raster(
         self,
         src: rasterio.DatasetReader,
         output_name: str,
-        is_dem: bool
     ) -> Dict[str, Any]:
         """Reproject raster to target CRS"""
         
@@ -180,17 +169,16 @@ class TerrainIngestor:
                     src_crs=src.crs,
                     dst_transform=transform,
                     dst_crs=dst_crs,
-                    resampling=Resampling.bilinear if is_dem else Resampling.cubic
+                    resampling=Resampling.bilinear
                 )
         
         # Get statistics and metadata
-        return self._extract_raster_info(output_path, is_dem)
+        return self._extract_raster_info(output_path)
     
     def _copy_raster(
         self,
         src: rasterio.DatasetReader,
         output_name: str,
-        is_dem: bool
     ) -> Dict[str, Any]:
         """Copy raster with optimization"""
         
@@ -211,12 +199,11 @@ class TerrainIngestor:
             for i in range(1, src.count + 1):
                 dst.write(src.read(i), i)
         
-        return self._extract_raster_info(output_path, is_dem)
+        return self._extract_raster_info(output_path)
     
     def _extract_raster_info(
         self,
         raster_path: Path,
-        is_dem: bool
     ) -> Dict[str, Any]:
         """Extract metadata and statistics from raster"""
         

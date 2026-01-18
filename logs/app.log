@@ -1,0 +1,858 @@
+2026-01-04 23:51:53 - root - INFO - STEP 1: PREPROCESSING
+2026-01-04 23:51:53 - root - INFO - STEP 1: PREPROCESSING
+2026-01-04 23:53:00 - src.data_layer.preprocessing.saga_preprocessor - INFO - SAGA GIS initialized: D:\Applications\saga\saga-9.10.2_x64\saga_cmd.exe
+2026-01-04 23:53:00 - src.data_layer.preprocessing.saga_preprocessor - INFO - SAGA GIS initialized: D:\Applications\saga\saga-9.10.2_x64\saga_cmd.exe
+2026-01-04 23:53:00 - src.data_layer.preprocessing.saga_preprocessor - INFO - SAGA GIS Preprocessing Pipeline
+2026-01-04 23:53:00 - src.data_layer.preprocessing.saga_preprocessor - INFO - SAGA GIS Preprocessing Pipeline
+2026-01-04 23:53:00 - src.data_layer.preprocessing.saga_preprocessor - INFO - Input DEM: data\raw\dtm\merged_dtm_2022.tif
+2026-01-04 23:53:00 - src.data_layer.preprocessing.saga_preprocessor - INFO - Input DEM: data\raw\dtm\merged_dtm_2022.tif
+2026-01-04 23:53:00 - src.data_layer.preprocessing.saga_preprocessor - INFO - Method: fill
+2026-01-04 23:53:00 - src.data_layer.preprocessing.saga_preprocessor - INFO - Method: fill
+2026-01-04 23:53:00 - src.data_layer.preprocessing.saga_preprocessor - INFO - 
+1. Detecting sink drainage routes...
+2026-01-04 23:53:00 - src.data_layer.preprocessing.saga_preprocessor - INFO - 
+1. Detecting sink drainage routes...
+2026-01-04 23:57:36 - src.data_layer.preprocessing.saga_preprocessor - INFO - 
+2. Removing sinks using method: fill...
+2026-01-04 23:57:36 - src.data_layer.preprocessing.saga_preprocessor - INFO - 
+2. Removing sinks using method: fill...
+2026-01-05 00:11:19 - src.data_layer.preprocessing.saga_preprocessor - INFO -  DEM preprocessing completed
+2026-01-05 00:11:19 - src.data_layer.preprocessing.saga_preprocessor - INFO -  DEM preprocessing completed
+2026-01-05 00:11:19 - src.data_layer.preprocessing.saga_preprocessor - INFO - 
+3. Calculating morphometry...
+2026-01-05 00:11:19 - src.data_layer.preprocessing.saga_preprocessor - INFO - 
+3. Calculating morphometry...
+2026-01-05 00:11:33 - src.data_layer.preprocessing.saga_preprocessor - INFO -  Morphometry calculated
+2026-01-05 00:11:33 - src.data_layer.preprocessing.saga_preprocessor - INFO -  Morphometry calculated
+2026-01-05 00:11:33 - src.data_layer.preprocessing.saga_preprocessor - INFO - 
+4. Calculating terrain ruggedness...
+2026-01-05 00:11:33 - src.data_layer.preprocessing.saga_preprocessor - INFO - 
+4. Calculating terrain ruggedness...
+2026-01-05 00:11:40 - src.data_layer.preprocessing.saga_preprocessor - INFO -  TRI calculated
+2026-01-05 00:11:40 - src.data_layer.preprocessing.saga_preprocessor - INFO -  TRI calculated
+2026-01-05 00:11:40 - src.data_layer.preprocessing.saga_preprocessor - INFO - 
+5. Calculating flow accumulation...
+2026-01-05 00:11:40 - src.data_layer.preprocessing.saga_preprocessor - INFO - 
+5. Calculating flow accumulation...
+2026-01-05 00:15:49 - src.data_layer.preprocessing.saga_preprocessor - INFO -  Flow accumulation calculated (D8 + MFD)
+2026-01-05 00:15:49 - src.data_layer.preprocessing.saga_preprocessor - INFO -  Flow accumulation calculated (D8 + MFD)
+2026-01-05 00:15:49 - src.data_layer.preprocessing.saga_preprocessor - INFO - 
+6. Calculating topographic wetness index...
+2026-01-05 00:15:49 - src.data_layer.preprocessing.saga_preprocessor - INFO - 
+6. Calculating topographic wetness index...2026-01-05 10:14:41 - src.data_layer.preprocessing.saga_preprocessor - INFO - SAGA GIS initialized: D:\Applications\saga\saga-9.10.2_x64\saga_cmd.exe
+2026-01-05 10:14:41 - src.data_layer.preprocessing.saga_preprocessor - INFO - SAGA GIS initialized: D:\Applications\saga\saga-9.10.2_x64\saga_cmd.exe
+2026-01-05 10:14:41 - src.data_layer.preprocessing.saga_preprocessor - INFO - 
+2026-01-05 10:20:22 - src.data_layer.preprocessing.saga_preprocessor - INFO - SAGA GIS initialized: D:\Applications\saga\saga-9.10.2_x64\saga_cmd.exe
+2026-01-05 10:20:22 - src.data_layer.preprocessing.saga_preprocessor - INFO - SAGA GIS initialized: D:\Applications\saga\saga-9.10.2_x64\saga_cmd.exe
+2026-01-05 10:20:22 - src.data_layer.preprocessing.saga_preprocessor - INFO - 
+7. Extracting stream network...
+2026-01-05 10:20:22 - src.data_layer.preprocessing.saga_preprocessor - INFO - 
+7. Extracting stream network...
+2026-01-05 10:20:22 - src.data_layer.preprocessing.saga_preprocessor - INFO - Initial value 3000
+2026-01-05 10:20:22 - src.data_layer.preprocessing.saga_preprocessor - INFO - Initial value 3000
+2026-01-05 10:24:04 - src.data_layer.preprocessing.saga_preprocessor - INFO - Initial value 6000
+2026-01-05 10:24:04 - src.data_layer.preprocessing.saga_preprocessor - INFO - Initial value 6000
+2026-01-05 10:26:41 - src.data_layer.preprocessing.saga_preprocessor - INFO - Initial value 12000
+2026-01-05 10:26:41 - src.data_layer.preprocessing.saga_preprocessor - INFO - Initial value 12000
+2026-01-05 10:29:42 - src.data_layer.preprocessing.saga_preprocessor - INFO -  Stream network extracted
+2026-01-05 10:29:42 - src.data_layer.preprocessing.saga_preprocessor - INFO -  Stream network extracted
+2026-01-05 10:29:42 - src.data_layer.preprocessing.saga_preprocessor - INFO -  COMPLETE PREPROCESSING PIPELINE FINISHED
+2026-01-05 10:29:42 - src.data_layer.preprocessing.saga_preprocessor - INFO -  COMPLETE PREPROCESSING PIPELINE FINISHED
+2026-01-05 10:29:42 - src.data_layer.preprocessing.saga_preprocessor - INFO - All outputs saved to: data\processed\preprocessing
+2026-01-05 10:29:42 - src.data_layer.preprocessing.saga_preprocessor - INFO - All outputs saved to: data\processed\preprocessing
+2026-01-05 16:25:00 - root - INFO - RELEASE AREA IDENTIFICATION
+2026-01-05 16:25:00 - root - INFO - RELEASE AREA IDENTIFICATION
+2026-01-05 16:25:04 - src.models.release_areas.saga_release_detector - INFO - SAGA initialized: D:\Applications\saga\saga-9.10.2_x64\saga_cmd.exe
+2026-01-05 16:25:04 - src.models.release_areas.saga_release_detector - INFO - SAGA initialized: D:\Applications\saga\saga-9.10.2_x64\saga_cmd.exe
+2026-01-05 16:25:04 - src.models.release_areas.saga_release_detector - INFO - SAGA GIS Release Area Identification
+2026-01-05 16:25:04 - src.models.release_areas.saga_release_detector - INFO - SAGA GIS Release Area Identification
+2026-01-05 16:25:04 - src.models.release_areas.saga_release_detector - INFO - 
+1. Creating slope criterion (15-45 degrees)...
+2026-01-05 16:25:04 - src.models.release_areas.saga_release_detector - INFO - 
+1. Creating slope criterion (15-45 degrees)...
+2026-01-05 16:25:12 - src.models.release_areas.saga_release_detector - INFO -  Slope mask created
+2026-01-05 16:25:12 - src.models.release_areas.saga_release_detector - INFO -  Slope mask created
+2026-01-05 16:25:12 - src.models.release_areas.saga_release_detector - INFO - 
+2. Creating plan curvature criterion (< -0.01)...
+2026-01-05 16:25:12 - src.models.release_areas.saga_release_detector - INFO - 
+2. Creating plan curvature criterion (< -0.01)...
+2026-01-05 16:25:22 - src.models.release_areas.saga_release_detector - INFO -  Curvature mask created
+2026-01-05 16:25:22 - src.models.release_areas.saga_release_detector - INFO -  Curvature mask created
+2026-01-05 16:25:22 - src.models.release_areas.saga_release_detector - INFO - 
+3. Creating flow accumulation criterion (> 500 cells)...
+2026-01-05 16:25:22 - src.models.release_areas.saga_release_detector - INFO - 
+3. Creating flow accumulation criterion (> 500 cells)...
+2026-01-05 16:25:31 - src.models.release_areas.saga_release_detector - INFO -  Flow accumulation mask created
+2026-01-05 16:25:31 - src.models.release_areas.saga_release_detector - INFO -  Flow accumulation mask created
+2026-01-05 16:25:31 - src.models.release_areas.saga_release_detector - INFO - 
+4. Creating roughness criterion...
+2026-01-05 16:25:31 - src.models.release_areas.saga_release_detector - INFO - 
+4. Creating roughness criterion...2026-01-05 16:31:45 - root - INFO - RELEASE AREA IDENTIFICATION
+2026-01-05 16:38:54 - src.models.release_areas.saga_release_detector - INFO -  Roughness mask created
+2026-01-05 16:38:54 - src.models.release_areas.saga_release_detector - INFO -  Roughness mask created
+2026-01-05 16:38:54 - src.models.release_areas.saga_release_detector - INFO - 
+5. Creating vegetation criterion (DSM - DTM)...
+2026-01-05 16:38:54 - src.models.release_areas.saga_release_detector - INFO - 
+5. Creating vegetation criterion (DSM - DTM)...
+2026-01-05 16:39:07 - src.models.release_areas.saga_release_detector - INFO -  Vegetation height calculated
+2026-01-05 16:39:07 - src.models.release_areas.saga_release_detector - INFO -  Vegetation height calculated
+2026-01-05 16:39:16 - src.models.release_areas.saga_release_detector - INFO -  Bare areas mask created
+2026-01-05 16:39:16 - src.models.release_areas.saga_release_detector - INFO -  Bare areas mask created
+2026-01-05 16:39:16 - src.models.release_areas.saga_release_detector - INFO - 
+6. Combining all criteria (including vegetation)...
+2026-01-05 16:39:16 - src.models.release_areas.saga_release_detector - INFO - 
+6. Combining all criteria (including vegetation)...
+2026-01-05 16:39:39 - src.models.release_areas.saga_release_detector - INFO -  All criteria combined (with vegetation)
+2026-01-05 16:39:39 - src.models.release_areas.saga_release_detector - INFO -  All criteria combined (with vegetation)
+2026-01-05 16:39:39 - src.models.release_areas.saga_release_detector - INFO - 
+
+2026-01-05 16:50:37 - src.models.release_areas.saga_release_detector - INFO - SAGA initialized: D:\Applications\saga\saga-9.10.2_x64\saga_cmd.exe
+2026-01-05 16:50:37 - src.models.release_areas.saga_release_detector - INFO - SAGA initialized: D:\Applications\saga\saga-9.10.2_x64\saga_cmd.exe
+2026-01-05 16:50:37 - src.models.release_areas.saga_release_detector - INFO - 
+1. Creating slope criterion ...
+2026-01-05 16:50:37 - src.models.release_areas.saga_release_detector - INFO - 
+1. Creating slope criterion ...
+2026-01-05 16:50:48 - src.models.release_areas.saga_release_detector - INFO -  Slope mask created
+2026-01-05 16:50:48 - src.models.release_areas.saga_release_detector - INFO -  Slope mask created
+2026-01-05 16:51:02 - src.models.release_areas.saga_release_detector - INFO -  All criteria combined (with vegetation)
+2026-01-05 16:51:02 - src.models.release_areas.saga_release_detector - INFO -  All criteria combined (with vegetation)
+2026-01-05 16:51:02 - src.models.release_areas.saga_release_detector - INFO - 
+7. Converting raster to polygons...
+2026-01-05 16:51:02 - src.models.release_areas.saga_release_detector - INFO - 
+7. Converting raster to polygons...
+2026-01-05 16:51:04 - src.models.release_areas.saga_release_detector - ERROR -  Vectorization failed: A stderr was detected after the execution of "Vectorising Grid Classes": 
+[Error] select a tool
+If you want to suppress this error, set "ignore_stderr" to True when executing.
+2026-01-05 16:51:04 - src.models.release_areas.saga_release_detector - ERROR -  Vectorization failed: A stderr was detected after the execution of "Vectorising Grid Classes": 
+[Error] select a tool
+If you want to suppress this error, set "ignore_stderr" to True when executing.
+2026-01-05 16:51:04 - src.models.release_areas.saga_release_detector - WARNING -   Trying alternative vectorization method...
+2026-01-05 16:51:04 - src.models.release_areas.saga_release_detector - WARNING -   Trying alternative vectorization method...
+2026-01-05 16:51:05 - src.models.release_areas.saga_release_detector - ERROR -  Alternative vectorization also failed: A stderr was detected after the execution of "Grid Values to Points": 
+[Error] select a tool
+If you want to suppress this error, set "ignore_stderr" to True when executing.
+2026-01-05 16:51:05 - src.models.release_areas.saga_release_detector - ERROR -  Alternative vectorization also failed: A stderr was detected after the execution of "Grid Values to Points": 
+[Error] select a tool
+If you want to suppress this error, set "ignore_stderr" to True when executing.
+2026-01-05 16:56:06 - src.models.release_areas.saga_release_detector - INFO - SAGA initialized: D:\Applications\saga\saga-9.10.2_x64\saga_cmd.exe
+2026-01-05 16:56:06 - src.models.release_areas.saga_release_detector - INFO - SAGA initialized: D:\Applications\saga\saga-9.10.2_x64\saga_cmd.exe
+2026-01-05 16:56:06 - src.models.release_areas.saga_release_detector - INFO - 
+1. Creating slope criterion ...
+2026-01-05 16:56:06 - src.models.release_areas.saga_release_detector - INFO - 
+1. Creating slope criterion ...
+2026-01-05 16:56:18 - src.models.release_areas.saga_release_detector - INFO -  Slope mask created
+2026-01-05 16:56:18 - src.models.release_areas.saga_release_detector - INFO -  Slope mask created
+2026-01-05 16:56:35 - src.models.release_areas.saga_release_detector - INFO -  All criteria combined (with vegetation)
+2026-01-05 16:56:35 - src.models.release_areas.saga_release_detector - INFO -  All criteria combined (with vegetation)
+2026-01-05 16:56:35 - src.models.release_areas.saga_release_detector - INFO - 
+7. Converting raster to polygons...
+2026-01-05 16:56:35 - src.models.release_areas.saga_release_detector - INFO - 
+7. Converting raster to polygons...
+2026-01-05 16:56:37 - src.models.release_areas.saga_release_detector - ERROR -  Vectorization failed: A stderr was detected after the execution of "Vectorising Grid Classes": 
+[Error] select a tool
+If you want to suppress this error, set "ignore_stderr" to True when executing.
+2026-01-05 16:56:37 - src.models.release_areas.saga_release_detector - ERROR -  Vectorization failed: A stderr was detected after the execution of "Vectorising Grid Classes": 
+[Error] select a tool
+If you want to suppress this error, set "ignore_stderr" to True when executing.
+2026-01-05 16:56:37 - src.models.release_areas.saga_release_detector - WARNING -   Trying alternative vectorization method...
+2026-01-05 16:56:37 - src.models.release_areas.saga_release_detector - WARNING -   Trying alternative vectorization method...
+2026-01-05 16:56:38 - src.models.release_areas.saga_release_detector - ERROR -  Alternative vectorization also failed: A stderr was detected after the execution of "Grid Values to Points": 
+[Error] select a tool
+If you want to suppress this error, set "ignore_stderr" to True when executing.
+2026-01-05 16:56:38 - src.models.release_areas.saga_release_detector - ERROR -  Alternative vectorization also failed: A stderr was detected after the execution of "Grid Values to Points": 
+[Error] select a tool
+If you want to suppress this error, set "ignore_stderr" to True when executing.
+2026-01-05 17:21:31 - src.models.release_areas.saga_release_detector - INFO - SAGA initialized: D:\Applications\saga\saga-9.10.2_x64\saga_cmd.exe
+2026-01-05 17:21:31 - src.models.release_areas.saga_release_detector - INFO - SAGA initialized: D:\Applications\saga\saga-9.10.2_x64\saga_cmd.exe
+2026-01-05 17:21:31 - src.models.release_areas.saga_release_detector - INFO - 
+1. Creating slope criterion (15-50 degrees) ...
+2026-01-05 17:21:31 - src.models.release_areas.saga_release_detector - INFO - 
+1. Creating slope criterion (15-50 degrees) ...
+2026-01-05 17:21:41 - src.models.release_areas.saga_release_detector - INFO -  Slope mask created
+2026-01-05 17:21:41 - src.models.release_areas.saga_release_detector - INFO -  Slope mask created
+2026-01-05 17:21:55 - src.models.release_areas.saga_release_detector - INFO -  All criteria combined (with vegetation)
+2026-01-05 17:21:55 - src.models.release_areas.saga_release_detector - INFO -  All criteria combined (with vegetation)
+2026-01-05 17:21:55 - src.models.release_areas.saga_release_detector - INFO - 
+7. Converting raster to polygons...
+2026-01-05 17:21:55 - src.models.release_areas.saga_release_detector - INFO - 
+7. Converting raster to polygons...
+2026-01-06 00:13:42 - src.models.release_areas.saga_release_detector - INFO - SAGA initialized: D:\Applications\saga\saga-9.10.2_x64\saga_cmd.exe
+2026-01-06 00:13:42 - src.models.release_areas.saga_release_detector - INFO - SAGA initialized: D:\Applications\saga\saga-9.10.2_x64\saga_cmd.exe
+2026-01-06 00:13:42 - src.models.release_areas.saga_release_detector - INFO - 
+7. Converting raster to polygons...
+2026-01-06 00:13:42 - src.models.release_areas.saga_release_detector - INFO - 
+7. Converting raster to polygons...
+2026-01-06 00:13:44 - src.models.release_areas.saga_release_detector - ERROR -  Vectorization failed: A stderr was detected after the execution of "Vectorising Grid Classes": 
+[Error] select a tool
+If you want to suppress this error, set "ignore_stderr" to True when executing.
+2026-01-06 00:13:44 - src.models.release_areas.saga_release_detector - ERROR -  Vectorization failed: A stderr was detected after the execution of "Vectorising Grid Classes": 
+[Error] select a tool
+If you want to suppress this error, set "ignore_stderr" to True when executing.
+2026-01-06 00:17:22 - src.models.release_areas.saga_release_detector - INFO - SAGA initialized: D:\Applications\saga\saga-9.10.2_x64\saga_cmd.exe
+2026-01-06 00:17:22 - src.models.release_areas.saga_release_detector - INFO - SAGA initialized: D:\Applications\saga\saga-9.10.2_x64\saga_cmd.exe
+2026-01-06 00:17:22 - src.models.release_areas.saga_release_detector - INFO - 
+7. Converting raster to polygons...
+2026-01-06 00:17:22 - src.models.release_areas.saga_release_detector - INFO - 
+7. Converting raster to polygons...
+2026-01-06 09:57:56 - src.models.release_areas.saga_release_detector - INFO - SAGA initialized: D:\Applications\saga\saga-9.10.2_x64\saga_cmd.exe
+2026-01-06 09:57:56 - src.models.release_areas.saga_release_detector - INFO - SAGA initialized: D:\Applications\saga\saga-9.10.2_x64\saga_cmd.exe
+2026-01-06 09:57:56 - src.models.release_areas.saga_release_detector - INFO - 
+7. Converting raster to polygons...
+2026-01-06 09:57:56 - src.models.release_areas.saga_release_detector - INFO - 
+7. Converting raster to polygons...
+2026-01-06 11:55:43 - src.models.release_areas.saga_release_detector - INFO - SAGA initialized: D:\Applications\saga\saga-9.10.2_x64\saga_cmd.exe
+2026-01-06 11:55:43 - src.models.release_areas.saga_release_detector - INFO - SAGA initialized: D:\Applications\saga\saga-9.10.2_x64\saga_cmd.exe
+2026-01-06 11:55:43 - src.models.release_areas.saga_release_detector - INFO - 
+7. Converting raster to polygons...
+2026-01-06 11:55:43 - src.models.release_areas.saga_release_detector - INFO - 
+7. Converting raster to polygons...
+2026-01-06 12:08:44 - src.models.release_areas.saga_release_detector - INFO - SAGA initialized: D:\Applications\saga\saga-9.10.2_x64\saga_cmd.exe
+2026-01-06 12:08:44 - src.models.release_areas.saga_release_detector - INFO - SAGA initialized: D:\Applications\saga\saga-9.10.2_x64\saga_cmd.exe
+2026-01-06 12:08:44 - src.models.release_areas.saga_release_detector - INFO - 
+7. Converting raster to polygons...
+2026-01-06 12:08:44 - src.models.release_areas.saga_release_detector - INFO - 
+7. Converting raster to polygons...
+2026-01-06 12:08:44 - src.models.release_areas.saga_release_detector - INFO -   Raster: (16001, 5001), Non-zero: 4133427 pixels
+2026-01-06 12:08:44 - src.models.release_areas.saga_release_detector - INFO -   Raster: (16001, 5001), Non-zero: 4133427 pixels
+2026-01-06 12:08:44 - src.models.release_areas.saga_release_detector - INFO -   Vectorizing with Rasterio...
+2026-01-06 12:08:44 - src.models.release_areas.saga_release_detector - INFO -   Vectorizing with Rasterio...
+2026-01-06 12:10:21 - src.models.release_areas.saga_release_detector - INFO -  Extracted 1418327 polygons
+2026-01-06 12:10:21 - src.models.release_areas.saga_release_detector - INFO -  Extracted 1418327 polygons
+2026-01-06 12:10:21 - src.models.release_areas.saga_release_detector - ERROR -  Rasterio vectorization failed: If using all scalar values, you must pass an index
+2026-01-06 12:10:21 - src.models.release_areas.saga_release_detector - ERROR -  Rasterio vectorization failed: If using all scalar values, you must pass an index
+2026-01-06 12:19:31 - src.models.release_areas.saga_release_detector - INFO - SAGA initialized: D:\Applications\saga\saga-9.10.2_x64\saga_cmd.exe
+2026-01-06 12:19:31 - src.models.release_areas.saga_release_detector - INFO - SAGA initialized: D:\Applications\saga\saga-9.10.2_x64\saga_cmd.exe
+2026-01-06 12:19:31 - src.models.release_areas.saga_release_detector - INFO - 
+7. Converting raster to polygons...
+2026-01-06 12:19:31 - src.models.release_areas.saga_release_detector - INFO - 
+7. Converting raster to polygons...
+2026-01-06 12:19:31 - src.models.release_areas.saga_release_detector - INFO -   Raster: (16001, 5001), Non-zero: 4133427 pixels
+2026-01-06 12:19:31 - src.models.release_areas.saga_release_detector - INFO -   Raster: (16001, 5001), Non-zero: 4133427 pixels
+2026-01-06 12:19:31 - src.models.release_areas.saga_release_detector - INFO -   Vectorizing with Rasterio...
+2026-01-06 12:19:31 - src.models.release_areas.saga_release_detector - INFO -   Vectorizing with Rasterio...
+2026-01-06 12:21:05 - src.models.release_areas.saga_release_detector - INFO -  Extracted 1418327 polygons
+2026-01-06 12:21:05 - src.models.release_areas.saga_release_detector - INFO -  Extracted 1418327 polygons
+2026-01-06 12:21:15 - src.models.release_areas.saga_release_detector - INFO - Polygons dissolved
+2026-01-06 12:21:15 - src.models.release_areas.saga_release_detector - INFO - Polygons dissolved
+2026-01-06 13:15:08 - src.models.release_areas.saga_release_detector - INFO - SAGA initialized: D:\Applications\saga\saga-9.10.2_x64\saga_cmd.exe
+2026-01-06 13:15:08 - src.models.release_areas.saga_release_detector - INFO - SAGA initialized: D:\Applications\saga\saga-9.10.2_x64\saga_cmd.exe
+2026-01-06 13:15:08 - src.models.release_areas.saga_release_detector - INFO - 
+7. Converting raster to polygons...
+2026-01-06 13:15:08 - src.models.release_areas.saga_release_detector - INFO - 
+7. Converting raster to polygons...
+2026-01-06 13:15:08 - src.models.release_areas.saga_release_detector - INFO -   Raster: (16001, 5001), Non-zero: 4133427 pixels
+2026-01-06 13:15:08 - src.models.release_areas.saga_release_detector - INFO -   Raster: (16001, 5001), Non-zero: 4133427 pixels
+2026-01-06 13:15:09 - src.models.release_areas.saga_release_detector - INFO -   Vectorizing with Rasterio...
+2026-01-06 13:15:09 - src.models.release_areas.saga_release_detector - INFO -   Vectorizing with Rasterio...
+2026-01-06 13:16:48 - src.models.release_areas.saga_release_detector - INFO -  Extracted 1418327 polygons
+2026-01-06 13:16:48 - src.models.release_areas.saga_release_detector - INFO -  Extracted 1418327 polygons
+2026-01-06 14:05:38 - src.models.release_areas.saga_release_detector - ERROR - Failed to dissolve polygons
+2026-01-06 14:05:38 - src.models.release_areas.saga_release_detector - ERROR - Failed to dissolve polygons
+2026-01-06 19:39:42 - src.models.release_areas.saga_release_detector - INFO - SAGA initialized: D:\Applications\saga\saga-9.10.2_x64\saga_cmd.exe
+2026-01-06 19:39:42 - src.models.release_areas.saga_release_detector - INFO - SAGA initialized: D:\Applications\saga\saga-9.10.2_x64\saga_cmd.exe
+2026-01-06 19:39:42 - src.models.release_areas.saga_release_detector - INFO - 
+7. Converting raster to polygons...
+2026-01-06 19:39:42 - src.models.release_areas.saga_release_detector - INFO - 
+7. Converting raster to polygons...
+2026-01-10 17:16:01 - root - INFO - SAGA GIS GPP DEBRIS FLOW SIMULATION
+2026-01-10 17:16:01 - root - INFO - SAGA GIS GPP DEBRIS FLOW SIMULATION
+2026-01-10 17:16:01 - root - INFO - 
+Loading release areas from: data\processed\release_areas\release_polygon_1.gpkg
+2026-01-10 17:16:01 - root - INFO - 
+Loading release areas from: data\processed\release_areas\release_polygon_1.gpkg
+2026-01-10 17:16:02 - root - INFO - Loaded 1 release areas
+2026-01-10 17:16:02 - root - INFO - Loaded 1 release areas
+2026-01-10 17:17:18 - root - INFO - Running GPP Simulation
+2026-01-10 17:17:18 - root - INFO - Running GPP Simulation
+2026-01-10 17:17:18 - src.models.runout.saga_gpp_runner - INFO - SAGA GIS GPP SIMULATION
+2026-01-10 17:17:18 - src.models.runout.saga_gpp_runner - INFO - SAGA GIS GPP SIMULATION
+2026-01-10 17:17:18 - src.models.runout.saga_gpp_runner - INFO - 
+Converting release areas to raster...
+2026-01-10 17:17:18 - src.models.runout.saga_gpp_runner - INFO - 
+Converting release areas to raster...
+2026-01-10 17:17:19 - root - ERROR - Simulation failed: A stderr was detected after the execution of "Shapes to Grid": 
+[Error] select a tool
+If you want to suppress this error, set "ignore_stderr" to True when executing.
+Traceback (most recent call last):
+  File "D:\Master\DigitalTwins\debris-flow-digital-twins\scripts\run_gpp_simulation.py", line 49, in main
+    results = gpp.run_gpp_simulation(
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Master\DigitalTwins\debris-flow-digital-twins\src\models\runout\saga_gpp_runner.py", line 58, in run_gpp_simulation
+    grid_from_shapes.execute(
+  File "D:\conda\anaconda3\envs\dt_env\Lib\site-packages\PySAGA_cmd\saga.py", line 587, in execute
+    return ToolOutput(self, output, ignore_stderr)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 6, in __init__
+  File "D:\conda\anaconda3\envs\dt_env\Lib\site-packages\PySAGA_cmd\saga.py", line 768, in __post_init__
+    raise ExecutionError(read, self.saga_executable)
+PySAGA_cmd.saga.ExecutionError: A stderr was detected after the execution of "Shapes to Grid": 
+[Error] select a tool
+If you want to suppress this error, set "ignore_stderr" to True when executing.
+2026-01-10 17:17:19 - root - ERROR - Simulation failed: A stderr was detected after the execution of "Shapes to Grid": 
+[Error] select a tool
+If you want to suppress this error, set "ignore_stderr" to True when executing.
+Traceback (most recent call last):
+  File "D:\Master\DigitalTwins\debris-flow-digital-twins\scripts\run_gpp_simulation.py", line 49, in main
+    results = gpp.run_gpp_simulation(
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Master\DigitalTwins\debris-flow-digital-twins\src\models\runout\saga_gpp_runner.py", line 58, in run_gpp_simulation
+    grid_from_shapes.execute(
+  File "D:\conda\anaconda3\envs\dt_env\Lib\site-packages\PySAGA_cmd\saga.py", line 587, in execute
+    return ToolOutput(self, output, ignore_stderr)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 6, in __init__
+  File "D:\conda\anaconda3\envs\dt_env\Lib\site-packages\PySAGA_cmd\saga.py", line 768, in __post_init__
+    raise ExecutionError(read, self.saga_executable)
+PySAGA_cmd.saga.ExecutionError: A stderr was detected after the execution of "Shapes to Grid": 
+[Error] select a tool
+If you want to suppress this error, set "ignore_stderr" to True when executing.
+2026-01-10 19:08:20 - root - INFO - SAGA GIS GPP DEBRIS FLOW SIMULATION
+2026-01-10 19:08:20 - root - INFO - SAGA GIS GPP DEBRIS FLOW SIMULATION
+2026-01-10 19:08:20 - root - INFO - 
+Loading release areas from: data\processed\release_areas\release_polygon_1.gpkg
+2026-01-10 19:08:20 - root - INFO - 
+Loading release areas from: data\processed\release_areas\release_polygon_1.gpkg
+2026-01-10 19:08:20 - root - INFO - Loaded 1 release areas
+2026-01-10 19:08:20 - root - INFO - Loaded 1 release areas
+2026-01-10 19:08:26 - root - INFO - Running GPP Simulation
+2026-01-10 19:08:26 - root - INFO - Running GPP Simulation
+2026-01-10 19:08:26 - src.models.runout.saga_gpp_runner - INFO - SAGA GIS GPP SIMULATION
+2026-01-10 19:08:26 - src.models.runout.saga_gpp_runner - INFO - SAGA GIS GPP SIMULATION
+2026-01-10 19:08:26 - src.models.runout.saga_gpp_runner - INFO - 
+Converting release areas to raster...
+2026-01-10 19:08:26 - src.models.runout.saga_gpp_runner - INFO - 
+Converting release areas to raster...
+2026-01-10 19:08:28 - root - ERROR - Simulation failed: A stderr was detected after the execution of "0": 
+[Error] input file:
+   id                                           geometry
+0   0  MULTIPOLYGON (((-49840.497 210127.711, -49759....[Error] Shapes
+If you want to suppress this error, set "ignore_stderr" to True when executing.
+Traceback (most recent call last):
+  File "D:\Master\DigitalTwins\debris-flow-digital-twins\scripts\run_gpp_simulation.py", line 49, in main
+    results = gpp.run_gpp_simulation(
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Master\DigitalTwins\debris-flow-digital-twins\src\models\runout\saga_gpp_runner.py", line 61, in run_gpp_simulation
+    shapes_to_grid.execute(
+  File "D:\conda\anaconda3\envs\dt_env\Lib\site-packages\PySAGA_cmd\saga.py", line 587, in execute
+    return ToolOutput(self, output, ignore_stderr)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 6, in __init__
+  File "D:\conda\anaconda3\envs\dt_env\Lib\site-packages\PySAGA_cmd\saga.py", line 768, in __post_init__
+    raise ExecutionError(read, self.saga_executable)
+PySAGA_cmd.saga.ExecutionError: A stderr was detected after the execution of "0": 
+[Error] input file:
+   id                                           geometry
+0   0  MULTIPOLYGON (((-49840.497 210127.711, -49759....[Error] Shapes
+If you want to suppress this error, set "ignore_stderr" to True when executing.
+2026-01-10 19:08:28 - root - ERROR - Simulation failed: A stderr was detected after the execution of "0": 
+[Error] input file:
+   id                                           geometry
+0   0  MULTIPOLYGON (((-49840.497 210127.711, -49759....[Error] Shapes
+If you want to suppress this error, set "ignore_stderr" to True when executing.
+Traceback (most recent call last):
+  File "D:\Master\DigitalTwins\debris-flow-digital-twins\scripts\run_gpp_simulation.py", line 49, in main
+    results = gpp.run_gpp_simulation(
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Master\DigitalTwins\debris-flow-digital-twins\src\models\runout\saga_gpp_runner.py", line 61, in run_gpp_simulation
+    shapes_to_grid.execute(
+  File "D:\conda\anaconda3\envs\dt_env\Lib\site-packages\PySAGA_cmd\saga.py", line 587, in execute
+    return ToolOutput(self, output, ignore_stderr)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 6, in __init__
+  File "D:\conda\anaconda3\envs\dt_env\Lib\site-packages\PySAGA_cmd\saga.py", line 768, in __post_init__
+    raise ExecutionError(read, self.saga_executable)
+PySAGA_cmd.saga.ExecutionError: A stderr was detected after the execution of "0": 
+[Error] input file:
+   id                                           geometry
+0   0  MULTIPOLYGON (((-49840.497 210127.711, -49759....[Error] Shapes
+If you want to suppress this error, set "ignore_stderr" to True when executing.
+2026-01-10 19:13:26 - root - INFO - SAGA GIS GPP DEBRIS FLOW SIMULATION
+2026-01-10 19:13:26 - root - INFO - SAGA GIS GPP DEBRIS FLOW SIMULATION
+2026-01-10 19:13:26 - root - INFO - 
+Loading release areas from: data\processed\release_areas\release_polygon_1.gpkg
+2026-01-10 19:13:26 - root - INFO - 
+Loading release areas from: data\processed\release_areas\release_polygon_1.gpkg
+2026-01-10 19:13:26 - root - INFO - Loaded 1 release areas
+2026-01-10 19:13:26 - root - INFO - Loaded 1 release areas
+2026-01-10 19:13:31 - root - INFO - Running GPP Simulation
+2026-01-10 19:13:31 - root - INFO - Running GPP Simulation
+2026-01-10 19:13:31 - src.models.runout.saga_gpp_runner - INFO - SAGA GIS GPP SIMULATION WITH PROJECTION MANAGEMENT
+2026-01-10 19:13:31 - src.models.runout.saga_gpp_runner - INFO - SAGA GIS GPP SIMULATION WITH PROJECTION MANAGEMENT
+2026-01-10 19:13:31 - src.models.runout.saga_gpp_runner - INFO - 
+Target CRS: EPSG:4326
+2026-01-10 19:13:31 - src.models.runout.saga_gpp_runner - INFO - 
+Target CRS: EPSG:4326
+2026-01-10 19:13:31 - src.models.runout.saga_gpp_runner - INFO - Reprojecting raster to EPSG:4326...
+2026-01-10 19:13:31 - src.models.runout.saga_gpp_runner - INFO - Reprojecting raster to EPSG:4326...
+2026-01-10 19:13:31 - src.models.runout.saga_gpp_runner - INFO -   Original CRS: PROJCS["MGI / Austria GK Central",GEOGCS["MGI",DATUM["Militar-Geographische_Institut",SPHEROID["Bessel 1841",6377397.155,299.1528128],AUTHORITY["EPSG","6312"]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433]],PROJECTION["Transverse_Mercator"],PARAMETER["latitude_of_origin",0],PARAMETER["central_meridian",13.3333333333333],PARAMETER["scale_factor",1],PARAMETER["false_easting",0],PARAMETER["false_northing",-5000000],UNIT["metre",1],AXIS["Easting",EAST],AXIS["Northing",NORTH],AUTHORITY["EPSG","31255"]]
+2026-01-10 19:13:31 - src.models.runout.saga_gpp_runner - INFO -   Original CRS: PROJCS["MGI / Austria GK Central",GEOGCS["MGI",DATUM["Militar-Geographische_Institut",SPHEROID["Bessel 1841",6377397.155,299.1528128],AUTHORITY["EPSG","6312"]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433]],PROJECTION["Transverse_Mercator"],PARAMETER["latitude_of_origin",0],PARAMETER["central_meridian",13.3333333333333],PARAMETER["scale_factor",1],PARAMETER["false_easting",0],PARAMETER["false_northing",-5000000],UNIT["metre",1],AXIS["Easting",EAST],AXIS["Northing",NORTH],AUTHORITY["EPSG","31255"]]
+2026-01-10 19:13:31 - rasterio._env - INFO - GDAL signalled an error: err_no=4, msg="`data\\processed\\simulations\\sim_001\\reprojected_inputs\\dem_EPSG_4326.tif' not recognized as a supported file format."
+2026-01-10 19:13:31 - rasterio._env - INFO - GDAL signalled an error: err_no=4, msg="`data\\processed\\simulations\\sim_001\\reprojected_inputs\\dem_EPSG_4326.tif' not recognized as a supported file format."
+2026-01-10 19:13:31 - root - ERROR - Simulation failed: 'data\processed\simulations\sim_001\reprojected_inputs\dem_EPSG_4326.tif' not recognized as a supported file format.
+Traceback (most recent call last):
+  File "rasterio\\_io.pyx", line 1486, in rasterio._io.DatasetWriterBase.__init__
+  File "rasterio\\_err.pyx", line 221, in rasterio._err.exc_wrap_pointer
+rasterio._err.CPLE_OpenFailedError: 'data\processed\simulations\sim_001\reprojected_inputs\dem_EPSG_4326.tif' not recognized as a supported file format.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Master\DigitalTwins\debris-flow-digital-twins\scripts\run_gpp_simulation.py", line 49, in main
+    results = gpp.run_gpp_simulation(
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Master\DigitalTwins\debris-flow-digital-twins\src\models\runout\saga_gpp_runner.py", line 205, in run_gpp_simulation
+    dem_path = self._reproject_raster(dem_path, dem_reprojected)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Master\DigitalTwins\debris-flow-digital-twins\src\models\runout\saga_gpp_runner.py", line 103, in _reproject_raster
+    with rasterio.open(output_raster, 'w', **kwargs) as dst:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\conda\anaconda3\envs\dt_env\Lib\site-packages\rasterio\env.py", line 451, in wrapper
+    return f(*args, **kwds)
+           ^^^^^^^^^^^^^^^^
+  File "D:\conda\anaconda3\envs\dt_env\Lib\site-packages\rasterio\__init__.py", line 327, in open
+    dataset = writer(
+              ^^^^^^^
+  File "rasterio\\_io.pyx", line 1491, in rasterio._io.DatasetWriterBase.__init__
+rasterio.errors.RasterioIOError: 'data\processed\simulations\sim_001\reprojected_inputs\dem_EPSG_4326.tif' not recognized as a supported file format.
+2026-01-10 19:13:31 - root - ERROR - Simulation failed: 'data\processed\simulations\sim_001\reprojected_inputs\dem_EPSG_4326.tif' not recognized as a supported file format.
+Traceback (most recent call last):
+  File "rasterio\\_io.pyx", line 1486, in rasterio._io.DatasetWriterBase.__init__
+  File "rasterio\\_err.pyx", line 221, in rasterio._err.exc_wrap_pointer
+rasterio._err.CPLE_OpenFailedError: 'data\processed\simulations\sim_001\reprojected_inputs\dem_EPSG_4326.tif' not recognized as a supported file format.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Master\DigitalTwins\debris-flow-digital-twins\scripts\run_gpp_simulation.py", line 49, in main
+    results = gpp.run_gpp_simulation(
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Master\DigitalTwins\debris-flow-digital-twins\src\models\runout\saga_gpp_runner.py", line 205, in run_gpp_simulation
+    dem_path = self._reproject_raster(dem_path, dem_reprojected)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Master\DigitalTwins\debris-flow-digital-twins\src\models\runout\saga_gpp_runner.py", line 103, in _reproject_raster
+    with rasterio.open(output_raster, 'w', **kwargs) as dst:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\conda\anaconda3\envs\dt_env\Lib\site-packages\rasterio\env.py", line 451, in wrapper
+    return f(*args, **kwds)
+           ^^^^^^^^^^^^^^^^
+  File "D:\conda\anaconda3\envs\dt_env\Lib\site-packages\rasterio\__init__.py", line 327, in open
+    dataset = writer(
+              ^^^^^^^
+  File "rasterio\\_io.pyx", line 1491, in rasterio._io.DatasetWriterBase.__init__
+rasterio.errors.RasterioIOError: 'data\processed\simulations\sim_001\reprojected_inputs\dem_EPSG_4326.tif' not recognized as a supported file format.
+2026-01-10 19:16:10 - root - INFO - SAGA GIS GPP DEBRIS FLOW SIMULATION
+2026-01-10 19:16:10 - root - INFO - SAGA GIS GPP DEBRIS FLOW SIMULATION
+2026-01-10 19:16:10 - root - INFO - 
+Loading release areas from: data\processed\release_areas\release_polygon_1.gpkg
+2026-01-10 19:16:10 - root - INFO - 
+Loading release areas from: data\processed\release_areas\release_polygon_1.gpkg
+2026-01-10 19:16:10 - root - INFO - Loaded 1 release areas
+2026-01-10 19:16:10 - root - INFO - Loaded 1 release areas
+2026-01-10 19:16:14 - root - INFO - Running GPP Simulation
+2026-01-10 19:16:14 - root - INFO - Running GPP Simulation
+2026-01-10 19:16:14 - src.models.runout.saga_gpp_runner - INFO - ============================================================
+2026-01-10 19:16:14 - src.models.runout.saga_gpp_runner - INFO - ============================================================
+2026-01-10 19:16:14 - src.models.runout.saga_gpp_runner - INFO - SAGA GIS GPP SIMULATION WITH PROJECTION MANAGEMENT
+2026-01-10 19:16:14 - src.models.runout.saga_gpp_runner - INFO - SAGA GIS GPP SIMULATION WITH PROJECTION MANAGEMENT
+2026-01-10 19:16:14 - src.models.runout.saga_gpp_runner - INFO - ============================================================
+2026-01-10 19:16:14 - src.models.runout.saga_gpp_runner - INFO - ============================================================
+2026-01-10 19:16:14 - src.models.runout.saga_gpp_runner - INFO - 
+Target CRS: EPSG:32633
+2026-01-10 19:16:14 - src.models.runout.saga_gpp_runner - INFO - 
+Target CRS: EPSG:32633
+2026-01-10 19:16:14 - src.models.runout.saga_gpp_runner - INFO - ------------------------------------------------------------
+2026-01-10 19:16:14 - src.models.runout.saga_gpp_runner - INFO - ------------------------------------------------------------
+2026-01-10 19:16:14 - src.models.runout.saga_gpp_runner - INFO - Reprojecting raster to EPSG:32633...
+2026-01-10 19:16:14 - src.models.runout.saga_gpp_runner - INFO - Reprojecting raster to EPSG:32633...
+2026-01-10 19:16:14 - src.models.runout.saga_gpp_runner - INFO -   Original CRS: PROJCS["MGI / Austria GK Central",GEOGCS["MGI",DATUM["Militar-Geographische_Institut",SPHEROID["Bessel 1841",6377397.155,299.1528128],AUTHORITY["EPSG","6312"]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433]],PROJECTION["Transverse_Mercator"],PARAMETER["latitude_of_origin",0],PARAMETER["central_meridian",13.3333333333333],PARAMETER["scale_factor",1],PARAMETER["false_easting",0],PARAMETER["false_northing",-5000000],UNIT["metre",1],AXIS["Easting",EAST],AXIS["Northing",NORTH],AUTHORITY["EPSG","31255"]]
+2026-01-10 19:16:14 - src.models.runout.saga_gpp_runner - INFO -   Original CRS: PROJCS["MGI / Austria GK Central",GEOGCS["MGI",DATUM["Militar-Geographische_Institut",SPHEROID["Bessel 1841",6377397.155,299.1528128],AUTHORITY["EPSG","6312"]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433]],PROJECTION["Transverse_Mercator"],PARAMETER["latitude_of_origin",0],PARAMETER["central_meridian",13.3333333333333],PARAMETER["scale_factor",1],PARAMETER["false_easting",0],PARAMETER["false_northing",-5000000],UNIT["metre",1],AXIS["Easting",EAST],AXIS["Northing",NORTH],AUTHORITY["EPSG","31255"]]
+2026-01-10 19:16:15 - rasterio._env - INFO - GDAL signalled an error: err_no=4, msg="`data\\processed\\simulations\\sim_001\\reprojected_inputs\\dem_EPSG_32633.tif' not recognized as a supported file format."
+2026-01-10 19:16:15 - rasterio._env - INFO - GDAL signalled an error: err_no=4, msg="`data\\processed\\simulations\\sim_001\\reprojected_inputs\\dem_EPSG_32633.tif' not recognized as a supported file format."
+2026-01-10 19:16:15 - root - ERROR - Simulation failed: 'data\processed\simulations\sim_001\reprojected_inputs\dem_EPSG_32633.tif' not recognized as a supported file format.
+Traceback (most recent call last):
+  File "rasterio\\_io.pyx", line 1486, in rasterio._io.DatasetWriterBase.__init__
+  File "rasterio\\_err.pyx", line 221, in rasterio._err.exc_wrap_pointer
+rasterio._err.CPLE_OpenFailedError: 'data\processed\simulations\sim_001\reprojected_inputs\dem_EPSG_32633.tif' not recognized as a supported file format.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Master\DigitalTwins\debris-flow-digital-twins\scripts\run_gpp_simulation.py", line 49, in main
+    results = gpp.run_gpp_simulation(
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Master\DigitalTwins\debris-flow-digital-twins\src\models\runout\saga_gpp_runner.py", line 227, in run_gpp_simulation
+    dem_path = self._reproject_raster(dem_path, dem_reprojected)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Master\DigitalTwins\debris-flow-digital-twins\src\models\runout\saga_gpp_runner.py", line 122, in _reproject_raster
+    with rasterio.open(output_raster, 'w', **kwargs) as dst:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\conda\anaconda3\envs\dt_env\Lib\site-packages\rasterio\env.py", line 451, in wrapper
+    return f(*args, **kwds)
+           ^^^^^^^^^^^^^^^^
+  File "D:\conda\anaconda3\envs\dt_env\Lib\site-packages\rasterio\__init__.py", line 327, in open
+    dataset = writer(
+              ^^^^^^^
+  File "rasterio\\_io.pyx", line 1491, in rasterio._io.DatasetWriterBase.__init__
+rasterio.errors.RasterioIOError: 'data\processed\simulations\sim_001\reprojected_inputs\dem_EPSG_32633.tif' not recognized as a supported file format.
+2026-01-10 19:16:15 - root - ERROR - Simulation failed: 'data\processed\simulations\sim_001\reprojected_inputs\dem_EPSG_32633.tif' not recognized as a supported file format.
+Traceback (most recent call last):
+  File "rasterio\\_io.pyx", line 1486, in rasterio._io.DatasetWriterBase.__init__
+  File "rasterio\\_err.pyx", line 221, in rasterio._err.exc_wrap_pointer
+rasterio._err.CPLE_OpenFailedError: 'data\processed\simulations\sim_001\reprojected_inputs\dem_EPSG_32633.tif' not recognized as a supported file format.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Master\DigitalTwins\debris-flow-digital-twins\scripts\run_gpp_simulation.py", line 49, in main
+    results = gpp.run_gpp_simulation(
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Master\DigitalTwins\debris-flow-digital-twins\src\models\runout\saga_gpp_runner.py", line 227, in run_gpp_simulation
+    dem_path = self._reproject_raster(dem_path, dem_reprojected)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Master\DigitalTwins\debris-flow-digital-twins\src\models\runout\saga_gpp_runner.py", line 122, in _reproject_raster
+    with rasterio.open(output_raster, 'w', **kwargs) as dst:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\conda\anaconda3\envs\dt_env\Lib\site-packages\rasterio\env.py", line 451, in wrapper
+    return f(*args, **kwds)
+           ^^^^^^^^^^^^^^^^
+  File "D:\conda\anaconda3\envs\dt_env\Lib\site-packages\rasterio\__init__.py", line 327, in open
+    dataset = writer(
+              ^^^^^^^
+  File "rasterio\\_io.pyx", line 1491, in rasterio._io.DatasetWriterBase.__init__
+rasterio.errors.RasterioIOError: 'data\processed\simulations\sim_001\reprojected_inputs\dem_EPSG_32633.tif' not recognized as a supported file format.
+2026-01-10 19:26:51 - root - INFO - SAGA GIS GPP DEBRIS FLOW SIMULATION
+2026-01-10 19:26:51 - root - INFO - SAGA GIS GPP DEBRIS FLOW SIMULATION
+2026-01-10 19:26:51 - root - INFO - 
+Loading release areas from: data\processed\release_areas\release_polygon_1.shp
+2026-01-10 19:26:51 - root - INFO - 
+Loading release areas from: data\processed\release_areas\release_polygon_1.shp
+2026-01-10 19:26:51 - root - INFO - Loaded 1 release areas
+2026-01-10 19:26:51 - root - INFO - Loaded 1 release areas
+2026-01-10 19:27:06 - root - INFO - SAGA GIS GPP DEBRIS FLOW SIMULATION
+2026-01-10 19:27:06 - root - INFO - SAGA GIS GPP DEBRIS FLOW SIMULATION
+2026-01-10 19:27:06 - root - INFO - 
+Loading release areas from: data\processed\release_areas\release_polygon_1.shp
+2026-01-10 19:27:06 - root - INFO - 
+Loading release areas from: data\processed\release_areas\release_polygon_1.shp
+2026-01-10 19:27:06 - root - INFO - Loaded 1 release areas
+2026-01-10 19:27:06 - root - INFO - Loaded 1 release areas
+2026-01-10 19:27:11 - root - INFO - Running GPP Simulation
+2026-01-10 19:27:11 - root - INFO - Running GPP Simulation
+2026-01-10 19:27:11 - src.models.runout.saga_gpp_runner - INFO - SAGA GIS GPP SIMULATION
+2026-01-10 19:27:11 - src.models.runout.saga_gpp_runner - INFO - SAGA GIS GPP SIMULATION
+2026-01-10 19:27:11 - src.models.runout.saga_gpp_runner - INFO - 
+Converting release areas to raster...
+2026-01-10 19:27:11 - src.models.runout.saga_gpp_runner - INFO - 
+Converting release areas to raster...
+2026-01-10 19:27:13 - root - ERROR - Simulation failed: A stderr was detected after the execution of "0": 
+[Error] input file:
+   id                                           geometry
+0   0  POLYGON ((-49840.497 210127.711, -49831.041 21...[Error] Shapes
+If you want to suppress this error, set "ignore_stderr" to True when executing.
+Traceback (most recent call last):
+  File "D:\Master\DigitalTwins\debris-flow-digital-twins\scripts\run_gpp_simulation.py", line 49, in main
+    results = gpp.run_gpp_simulation(
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Master\DigitalTwins\debris-flow-digital-twins\src\models\runout\saga_gpp_runner.py", line 61, in run_gpp_simulation
+    shapes_to_grid.execute(
+  File "D:\conda\anaconda3\envs\dt_env\Lib\site-packages\PySAGA_cmd\saga.py", line 587, in execute
+    return ToolOutput(self, output, ignore_stderr)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 6, in __init__
+  File "D:\conda\anaconda3\envs\dt_env\Lib\site-packages\PySAGA_cmd\saga.py", line 768, in __post_init__
+    raise ExecutionError(read, self.saga_executable)
+PySAGA_cmd.saga.ExecutionError: A stderr was detected after the execution of "0": 
+[Error] input file:
+   id                                           geometry
+0   0  POLYGON ((-49840.497 210127.711, -49831.041 21...[Error] Shapes
+If you want to suppress this error, set "ignore_stderr" to True when executing.
+2026-01-10 19:27:13 - root - ERROR - Simulation failed: A stderr was detected after the execution of "0": 
+[Error] input file:
+   id                                           geometry
+0   0  POLYGON ((-49840.497 210127.711, -49831.041 21...[Error] Shapes
+If you want to suppress this error, set "ignore_stderr" to True when executing.
+Traceback (most recent call last):
+  File "D:\Master\DigitalTwins\debris-flow-digital-twins\scripts\run_gpp_simulation.py", line 49, in main
+    results = gpp.run_gpp_simulation(
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Master\DigitalTwins\debris-flow-digital-twins\src\models\runout\saga_gpp_runner.py", line 61, in run_gpp_simulation
+    shapes_to_grid.execute(
+  File "D:\conda\anaconda3\envs\dt_env\Lib\site-packages\PySAGA_cmd\saga.py", line 587, in execute
+    return ToolOutput(self, output, ignore_stderr)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 6, in __init__
+  File "D:\conda\anaconda3\envs\dt_env\Lib\site-packages\PySAGA_cmd\saga.py", line 768, in __post_init__
+    raise ExecutionError(read, self.saga_executable)
+PySAGA_cmd.saga.ExecutionError: A stderr was detected after the execution of "0": 
+[Error] input file:
+   id                                           geometry
+0   0  POLYGON ((-49840.497 210127.711, -49831.041 21...[Error] Shapes
+If you want to suppress this error, set "ignore_stderr" to True when executing.
+2026-01-10 19:44:12 - root - INFO - SAGA GIS GPP DEBRIS FLOW SIMULATION
+2026-01-10 19:44:12 - root - INFO - SAGA GIS GPP DEBRIS FLOW SIMULATION
+2026-01-10 19:44:12 - root - INFO - 
+Loading release areas from: data\processed\release_areas\release_polygon_1.shp
+2026-01-10 19:44:12 - root - INFO - 
+Loading release areas from: data\processed\release_areas\release_polygon_1.shp
+2026-01-10 19:44:13 - root - INFO - Loaded 1 release areas
+2026-01-10 19:44:13 - root - INFO - Loaded 1 release areas
+2026-01-10 19:44:17 - root - INFO - Running GPP Simulation
+2026-01-10 19:44:17 - root - INFO - Running GPP Simulation
+2026-01-10 19:44:17 - src.models.runout.saga_gpp_runner - INFO - ======================================================================
+2026-01-10 19:44:17 - src.models.runout.saga_gpp_runner - INFO - ======================================================================
+2026-01-10 19:44:17 - src.models.runout.saga_gpp_runner - INFO - SAGA GIS GPP DEBRIS FLOW SIMULATION
+2026-01-10 19:44:17 - src.models.runout.saga_gpp_runner - INFO - SAGA GIS GPP DEBRIS FLOW SIMULATION
+2026-01-10 19:44:17 - src.models.runout.saga_gpp_runner - INFO - ======================================================================
+2026-01-10 19:44:17 - src.models.runout.saga_gpp_runner - INFO - ======================================================================
+2026-01-10 19:44:17 - src.models.runout.saga_gpp_runner - INFO - 
+Step 1: Converting release areas to raster...
+2026-01-10 19:44:17 - src.models.runout.saga_gpp_runner - INFO - 
+Step 1: Converting release areas to raster...
+2026-01-10 19:44:19 - root - ERROR - Simulation failed: A stderr was detected after the execution of "0": 
+[Error] input file:
+   id                                           geometry
+0   0  POLYGON ((-49840.497 210127.711, -49831.041 21...[Error] Shapes
+If you want to suppress this error, set "ignore_stderr" to True when executing.
+Traceback (most recent call last):
+  File "D:\Master\DigitalTwins\debris-flow-digital-twins\scripts\run_gpp_simulation.py", line 49, in main
+    results = gpp.run_gpp_simulation(
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Master\DigitalTwins\debris-flow-digital-twins\src\models\runout\saga_gpp_runner.py", line 68, in run_gpp_simulation
+    shapes_to_grid.execute(
+  File "D:\conda\anaconda3\envs\dt_env\Lib\site-packages\PySAGA_cmd\saga.py", line 587, in execute
+    return ToolOutput(self, output, ignore_stderr)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 6, in __init__
+  File "D:\conda\anaconda3\envs\dt_env\Lib\site-packages\PySAGA_cmd\saga.py", line 768, in __post_init__
+    raise ExecutionError(read, self.saga_executable)
+PySAGA_cmd.saga.ExecutionError: A stderr was detected after the execution of "0": 
+[Error] input file:
+   id                                           geometry
+0   0  POLYGON ((-49840.497 210127.711, -49831.041 21...[Error] Shapes
+If you want to suppress this error, set "ignore_stderr" to True when executing.
+2026-01-10 19:44:19 - root - ERROR - Simulation failed: A stderr was detected after the execution of "0": 
+[Error] input file:
+   id                                           geometry
+0   0  POLYGON ((-49840.497 210127.711, -49831.041 21...[Error] Shapes
+If you want to suppress this error, set "ignore_stderr" to True when executing.
+Traceback (most recent call last):
+  File "D:\Master\DigitalTwins\debris-flow-digital-twins\scripts\run_gpp_simulation.py", line 49, in main
+    results = gpp.run_gpp_simulation(
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Master\DigitalTwins\debris-flow-digital-twins\src\models\runout\saga_gpp_runner.py", line 68, in run_gpp_simulation
+    shapes_to_grid.execute(
+  File "D:\conda\anaconda3\envs\dt_env\Lib\site-packages\PySAGA_cmd\saga.py", line 587, in execute
+    return ToolOutput(self, output, ignore_stderr)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 6, in __init__
+  File "D:\conda\anaconda3\envs\dt_env\Lib\site-packages\PySAGA_cmd\saga.py", line 768, in __post_init__
+    raise ExecutionError(read, self.saga_executable)
+PySAGA_cmd.saga.ExecutionError: A stderr was detected after the execution of "0": 
+[Error] input file:
+   id                                           geometry
+0   0  POLYGON ((-49840.497 210127.711, -49831.041 21...[Error] Shapes
+If you want to suppress this error, set "ignore_stderr" to True when executing.
+2026-01-11 10:35:54 - root - INFO - SAGA GIS GPP DEBRIS FLOW SIMULATION
+2026-01-11 10:35:54 - root - INFO - SAGA GIS GPP DEBRIS FLOW SIMULATION
+2026-01-11 10:35:54 - root - INFO - 
+Loading release areas from: data\processed\release_areas\release_polygon_1.shp
+2026-01-11 10:35:54 - root - INFO - 
+Loading release areas from: data\processed\release_areas\release_polygon_1.shp
+2026-01-11 10:35:55 - root - INFO - Loaded 1 release areas
+2026-01-11 10:35:55 - root - INFO - Loaded 1 release areas
+2026-01-11 10:36:00 - root - INFO - Running GPP Simulation
+2026-01-11 10:36:00 - root - INFO - Running GPP Simulation
+2026-01-11 10:36:00 - src.models.runout.saga_gpp_runner - INFO - SAGA GIS GPP DEBRIS FLOW SIMULATION
+2026-01-11 10:36:00 - src.models.runout.saga_gpp_runner - INFO - SAGA GIS GPP DEBRIS FLOW SIMULATION
+2026-01-11 10:36:00 - src.models.runout.saga_gpp_runner - INFO - 
+Step 1: Converting release areas to raster...
+2026-01-11 10:36:00 - src.models.runout.saga_gpp_runner - INFO - 
+Step 1: Converting release areas to raster...
+2026-01-11 10:36:02 - root - ERROR - Simulation failed: A stderr was detected after the execution of "0": 
+[Error] input file:
+   id                                           geometry
+0   0  POLYGON ((-49840.497 210127.711, -49831.041 21...[Error] Shapes
+If you want to suppress this error, set "ignore_stderr" to True when executing.
+Traceback (most recent call last):
+  File "D:\Master\DigitalTwins\debris-flow-digital-twins\scripts\run_gpp_simulation.py", line 49, in main
+    results = gpp.run_gpp_simulation(
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Master\DigitalTwins\debris-flow-digital-twins\src\models\runout\saga_gpp_runner.py", line 65, in run_gpp_simulation
+    shapes_to_grid.execute(
+  File "D:\conda\anaconda3\envs\dt_env\Lib\site-packages\PySAGA_cmd\saga.py", line 587, in execute
+    return ToolOutput(self, output, ignore_stderr)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 6, in __init__
+  File "D:\conda\anaconda3\envs\dt_env\Lib\site-packages\PySAGA_cmd\saga.py", line 768, in __post_init__
+    raise ExecutionError(read, self.saga_executable)
+PySAGA_cmd.saga.ExecutionError: A stderr was detected after the execution of "0": 
+[Error] input file:
+   id                                           geometry
+0   0  POLYGON ((-49840.497 210127.711, -49831.041 21...[Error] Shapes
+If you want to suppress this error, set "ignore_stderr" to True when executing.
+2026-01-11 10:36:02 - root - ERROR - Simulation failed: A stderr was detected after the execution of "0": 
+[Error] input file:
+   id                                           geometry
+0   0  POLYGON ((-49840.497 210127.711, -49831.041 21...[Error] Shapes
+If you want to suppress this error, set "ignore_stderr" to True when executing.
+Traceback (most recent call last):
+  File "D:\Master\DigitalTwins\debris-flow-digital-twins\scripts\run_gpp_simulation.py", line 49, in main
+    results = gpp.run_gpp_simulation(
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Master\DigitalTwins\debris-flow-digital-twins\src\models\runout\saga_gpp_runner.py", line 65, in run_gpp_simulation
+    shapes_to_grid.execute(
+  File "D:\conda\anaconda3\envs\dt_env\Lib\site-packages\PySAGA_cmd\saga.py", line 587, in execute
+    return ToolOutput(self, output, ignore_stderr)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 6, in __init__
+  File "D:\conda\anaconda3\envs\dt_env\Lib\site-packages\PySAGA_cmd\saga.py", line 768, in __post_init__
+    raise ExecutionError(read, self.saga_executable)
+PySAGA_cmd.saga.ExecutionError: A stderr was detected after the execution of "0": 
+[Error] input file:
+   id                                           geometry
+0   0  POLYGON ((-49840.497 210127.711, -49831.041 21...[Error] Shapes
+If you want to suppress this error, set "ignore_stderr" to True when executing.
+2026-01-11 10:37:26 - root - INFO - SAGA GIS GPP DEBRIS FLOW SIMULATION
+2026-01-11 10:37:26 - root - INFO - SAGA GIS GPP DEBRIS FLOW SIMULATION
+2026-01-11 10:37:26 - root - INFO - 
+Loading release areas from: data\processed\release_areas\release_polygon_1.shp
+2026-01-11 10:37:26 - root - INFO - 
+Loading release areas from: data\processed\release_areas\release_polygon_1.shp
+2026-01-11 10:37:26 - root - INFO - Loaded 1 release areas
+2026-01-11 10:37:26 - root - INFO - Loaded 1 release areas
+2026-01-11 10:37:31 - root - INFO - Running GPP Simulation
+2026-01-11 10:37:31 - root - INFO - Running GPP Simulation
+2026-01-11 10:37:31 - src.models.runout.saga_gpp_runner - INFO - SAGA GIS GPP DEBRIS FLOW SIMULATION
+2026-01-11 10:37:31 - src.models.runout.saga_gpp_runner - INFO - SAGA GIS GPP DEBRIS FLOW SIMULATION
+2026-01-11 10:37:31 - src.models.runout.saga_gpp_runner - INFO - 
+Step 1: Converting release areas to raster...
+2026-01-11 10:37:31 - src.models.runout.saga_gpp_runner - INFO - 
+Step 1: Converting release areas to raster...
+2026-01-11 10:37:33 - root - ERROR - Simulation failed: A stderr was detected after the execution of "0": 
+[Error] input file:
+   id                                           geometry
+0   0  POLYGON ((-49840.497 210127.711, -49831.041 21...[Error] Shapes
+If you want to suppress this error, set "ignore_stderr" to True when executing.
+Traceback (most recent call last):
+  File "D:\Master\DigitalTwins\debris-flow-digital-twins\scripts\run_gpp_simulation.py", line 49, in main
+    results = gpp.run_gpp_simulation(
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Master\DigitalTwins\debris-flow-digital-twins\src\models\runout\saga_gpp_runner.py", line 65, in run_gpp_simulation
+    shapes_to_grid.execute(
+  File "D:\conda\anaconda3\envs\dt_env\Lib\site-packages\PySAGA_cmd\saga.py", line 587, in execute
+    return ToolOutput(self, output, ignore_stderr)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 6, in __init__
+  File "D:\conda\anaconda3\envs\dt_env\Lib\site-packages\PySAGA_cmd\saga.py", line 768, in __post_init__
+    raise ExecutionError(read, self.saga_executable)
+PySAGA_cmd.saga.ExecutionError: A stderr was detected after the execution of "0": 
+[Error] input file:
+   id                                           geometry
+0   0  POLYGON ((-49840.497 210127.711, -49831.041 21...[Error] Shapes
+If you want to suppress this error, set "ignore_stderr" to True when executing.
+2026-01-11 10:37:33 - root - ERROR - Simulation failed: A stderr was detected after the execution of "0": 
+[Error] input file:
+   id                                           geometry
+0   0  POLYGON ((-49840.497 210127.711, -49831.041 21...[Error] Shapes
+If you want to suppress this error, set "ignore_stderr" to True when executing.
+Traceback (most recent call last):
+  File "D:\Master\DigitalTwins\debris-flow-digital-twins\scripts\run_gpp_simulation.py", line 49, in main
+    results = gpp.run_gpp_simulation(
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Master\DigitalTwins\debris-flow-digital-twins\src\models\runout\saga_gpp_runner.py", line 65, in run_gpp_simulation
+    shapes_to_grid.execute(
+  File "D:\conda\anaconda3\envs\dt_env\Lib\site-packages\PySAGA_cmd\saga.py", line 587, in execute
+    return ToolOutput(self, output, ignore_stderr)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 6, in __init__
+  File "D:\conda\anaconda3\envs\dt_env\Lib\site-packages\PySAGA_cmd\saga.py", line 768, in __post_init__
+    raise ExecutionError(read, self.saga_executable)
+PySAGA_cmd.saga.ExecutionError: A stderr was detected after the execution of "0": 
+[Error] input file:
+   id                                           geometry
+0   0  POLYGON ((-49840.497 210127.711, -49831.041 21...[Error] Shapes
+If you want to suppress this error, set "ignore_stderr" to True when executing.
+2026-01-11 10:43:51 - root - INFO - SAGA GIS GPP DEBRIS FLOW SIMULATION
+2026-01-11 10:43:51 - root - INFO - SAGA GIS GPP DEBRIS FLOW SIMULATION
+2026-01-11 10:43:51 - root - INFO - 
+Loading release areas from: data\processed\release_areas\release_polygon_1.shp
+2026-01-11 10:43:51 - root - INFO - 
+Loading release areas from: data\processed\release_areas\release_polygon_1.shp
+2026-01-11 10:43:55 - root - INFO - Running GPP Simulation
+2026-01-11 10:43:55 - root - INFO - Running GPP Simulation
+2026-01-11 10:43:55 - src.models.runout.saga_gpp_runner - INFO - SAGA GIS GPP DEBRIS FLOW SIMULATION
+2026-01-11 10:43:55 - src.models.runout.saga_gpp_runner - INFO - SAGA GIS GPP DEBRIS FLOW SIMULATION
+2026-01-11 10:43:55 - src.models.runout.saga_gpp_runner - INFO - 
+Step 1: Converting release areas to raster...
+2026-01-11 10:43:55 - src.models.runout.saga_gpp_runner - INFO - 
+Step 1: Converting release areas to raster...
+2026-01-11 10:44:01 - src.models.runout.saga_gpp_runner - INFO - Release areas converted to raster with unique IDs
+2026-01-11 10:44:01 - src.models.runout.saga_gpp_runner - INFO - Release areas converted to raster with unique IDs
+2026-01-11 10:44:05 - src.models.runout.saga_gpp_runner - INFO - Resampled release grid
+2026-01-11 10:44:05 - src.models.runout.saga_gpp_runner - INFO - Resampled release grid
+2026-01-11 10:44:05 - src.models.runout.saga_gpp_runner - INFO - 
+Step 2: Running GPP model...
+2026-01-11 10:44:05 - src.models.runout.saga_gpp_runner - INFO - 
+Step 2: Running GPP model...
+2026-01-11 10:44:05 - src.models.runout.saga_gpp_runner - INFO -   Process path model: Random Walk
+2026-01-11 10:44:05 - src.models.runout.saga_gpp_runner - INFO -   Process path model: Random Walk
+2026-01-11 10:44:05 - src.models.runout.saga_gpp_runner - INFO -   Friction model: 4 (0=None, 1=Geometric, 2=Fahrboeschung, 3=Shadow, 4=1-param, 5=PCM)
+2026-01-11 10:44:05 - src.models.runout.saga_gpp_runner - INFO -   Friction model: 4 (0=None, 1=Geometric, 2=Fahrboeschung, 3=Shadow, 4=1-param, 5=PCM)
+2026-01-11 10:44:05 - src.models.runout.saga_gpp_runner - INFO -   Friction mu: 0.1
+2026-01-11 10:44:05 - src.models.runout.saga_gpp_runner - INFO -   Friction mu: 0.1
+2026-01-11 10:44:05 - src.models.runout.saga_gpp_runner - INFO -   Iterations: 5
+2026-01-11 10:44:05 - src.models.runout.saga_gpp_runner - INFO -   Iterations: 5
+2026-01-11 14:36:56 - root - INFO - SAGA GIS GPP DEBRIS FLOW SIMULATION
+2026-01-11 14:36:56 - root - INFO - SAGA GIS GPP DEBRIS FLOW SIMULATION
+2026-01-11 14:36:56 - root - INFO - 
+Loading release areas from: data\processed\release_areas\release_polygon_1.shp
+2026-01-11 14:36:56 - root - INFO - 
+Loading release areas from: data\processed\release_areas\release_polygon_1.shp
+2026-01-11 14:37:02 - root - INFO - Running GPP Simulation
+2026-01-11 14:37:02 - root - INFO - Running GPP Simulation
+2026-01-11 14:37:02 - src.models.runout.saga_gpp_runner - INFO - SAGA GIS GPP DEBRIS FLOW SIMULATION
+2026-01-11 14:37:02 - src.models.runout.saga_gpp_runner - INFO - SAGA GIS GPP DEBRIS FLOW SIMULATION
+2026-01-11 14:37:02 - src.models.runout.saga_gpp_runner - INFO - 
+Step 1: Converting release areas to raster...
+2026-01-11 14:37:02 - src.models.runout.saga_gpp_runner - INFO - 
+Step 1: Converting release areas to raster...
+2026-01-11 14:37:02 - src.models.runout.saga_gpp_runner - INFO - 
+Step 2: Running GPP model...
+2026-01-11 14:37:02 - src.models.runout.saga_gpp_runner - INFO - 
+Step 2: Running GPP model...
+2026-01-11 14:37:02 - src.models.runout.saga_gpp_runner - INFO -   Process path model: Random Walk
+2026-01-11 14:37:02 - src.models.runout.saga_gpp_runner - INFO -   Process path model: Random Walk
+2026-01-11 14:37:02 - src.models.runout.saga_gpp_runner - INFO -   Friction model: 4 (4=1-param, 5=PCM)
+2026-01-11 14:37:02 - src.models.runout.saga_gpp_runner - INFO -   Friction model: 4 (4=1-param, 5=PCM)
+2026-01-11 14:37:02 - src.models.runout.saga_gpp_runner - INFO -   Friction mu: 0.1
+2026-01-11 14:37:02 - src.models.runout.saga_gpp_runner - INFO -   Friction mu: 0.1
+2026-01-11 14:37:02 - src.models.runout.saga_gpp_runner - INFO -   Iterations: 10
+2026-01-11 14:37:02 - src.models.runout.saga_gpp_runner - INFO -   Iterations: 10
+2026-01-11 14:45:22 - root - INFO - SAGA GIS GPP DEBRIS FLOW SIMULATION
+2026-01-11 14:45:22 - root - INFO - SAGA GIS GPP DEBRIS FLOW SIMULATION
+2026-01-11 14:45:22 - root - INFO - 
+Loading release areas from: data\processed\release_areas\release_polygon_1.shp
+2026-01-11 14:45:22 - root - INFO - 
+Loading release areas from: data\processed\release_areas\release_polygon_1.shp
+2026-01-11 14:45:27 - root - INFO - Running GPP Simulation
+2026-01-11 14:45:27 - root - INFO - Running GPP Simulation
+2026-01-11 14:45:27 - src.models.runout.saga_gpp_runner - INFO - SAGA GIS GPP DEBRIS FLOW SIMULATION
+2026-01-11 14:45:27 - src.models.runout.saga_gpp_runner - INFO - SAGA GIS GPP DEBRIS FLOW SIMULATION
+2026-01-11 14:45:27 - src.models.runout.saga_gpp_runner - INFO - 
+Step 1: Converting release areas to raster...
+2026-01-11 14:45:27 - src.models.runout.saga_gpp_runner - INFO - 
+Step 1: Converting release areas to raster...
+2026-01-11 14:45:27 - src.models.runout.saga_gpp_runner - INFO - 
+Step 2: Running GPP model...
+2026-01-11 14:45:27 - src.models.runout.saga_gpp_runner - INFO - 
+Step 2: Running GPP model...
+2026-01-11 14:45:27 - src.models.runout.saga_gpp_runner - INFO -   Process path model: Random Walk
+2026-01-11 14:45:27 - src.models.runout.saga_gpp_runner - INFO -   Process path model: Random Walk
+2026-01-11 14:45:27 - src.models.runout.saga_gpp_runner - INFO -   Friction model: 5 (4=1-param, 5=PCM)
+2026-01-11 14:45:27 - src.models.runout.saga_gpp_runner - INFO -   Friction model: 5 (4=1-param, 5=PCM)
+2026-01-11 14:45:27 - src.models.runout.saga_gpp_runner - INFO -   Friction mu: 0.1
+2026-01-11 14:45:27 - src.models.runout.saga_gpp_runner - INFO -   Friction mu: 0.1
+2026-01-11 14:45:27 - src.models.runout.saga_gpp_runner - INFO -   Mass-to-drag ratio: 300.0 m
+2026-01-11 14:45:27 - src.models.runout.saga_gpp_runner - INFO -   Mass-to-drag ratio: 300.0 m
+2026-01-11 14:45:27 - src.models.runout.saga_gpp_runner - INFO -   Iterations: 10
+2026-01-11 14:45:27 - src.models.runout.saga_gpp_runner - INFO -   Iterations: 10
