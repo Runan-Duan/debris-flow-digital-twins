@@ -856,3 +856,103 @@ Step 2: Running GPP model...
 2026-01-11 14:45:27 - src.models.runout.saga_gpp_runner - INFO -   Mass-to-drag ratio: 300.0 m
 2026-01-11 14:45:27 - src.models.runout.saga_gpp_runner - INFO -   Iterations: 10
 2026-01-11 14:45:27 - src.models.runout.saga_gpp_runner - INFO -   Iterations: 10
+2026-01-13 15:40:48 - root - INFO - SAGA GIS GPP DEBRIS FLOW SIMULATION
+2026-01-13 15:40:48 - root - INFO - SAGA GIS GPP DEBRIS FLOW SIMULATION
+2026-01-13 15:40:48 - root - INFO - 
+Loading release areas from: data\processed\release_areas\release_polygon_2.shp
+2026-01-13 15:40:48 - root - INFO - 
+Loading release areas from: data\processed\release_areas\release_polygon_2.shp
+2026-01-13 15:40:55 - root - INFO - Running GPP Simulation
+2026-01-13 15:40:55 - root - INFO - Running GPP Simulation
+2026-01-13 15:40:55 - src.models.runout.saga_gpp_runner - INFO - SAGA GIS GPP DEBRIS FLOW SIMULATION
+2026-01-13 15:40:55 - src.models.runout.saga_gpp_runner - INFO - SAGA GIS GPP DEBRIS FLOW SIMULATION
+2026-01-13 15:40:55 - src.models.runout.saga_gpp_runner - INFO - 
+Step 1: Converting release areas to raster...
+2026-01-13 15:40:55 - src.models.runout.saga_gpp_runner - INFO - 
+Step 1: Converting release areas to raster...
+2026-01-13 15:41:01 - root - ERROR - Simulation failed: A stderr was detected after the execution of "0": 
+[Error] Polygons' and target grid's extent do not intersect.[Error] executing tool:
+Shapes to Grid
+If you want to suppress this error, set "ignore_stderr" to True when executing.
+Traceback (most recent call last):
+  File "D:\Master\DigitalTwins\debris-flow-digital-twins\scripts\run_gpp_simulation.py", line 47, in main
+    results = gpp.run_gpp_simulation(
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Master\DigitalTwins\debris-flow-digital-twins\src\models\runout\saga_gpp_runner.py", line 65, in run_gpp_simulation
+    shapes_to_grid.execute(
+  File "D:\conda\anaconda3\envs\dt_env\Lib\site-packages\PySAGA_cmd\saga.py", line 587, in execute
+    return ToolOutput(self, output, ignore_stderr)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 6, in __init__
+  File "D:\conda\anaconda3\envs\dt_env\Lib\site-packages\PySAGA_cmd\saga.py", line 768, in __post_init__
+    raise ExecutionError(read, self.saga_executable)
+PySAGA_cmd.saga.ExecutionError: A stderr was detected after the execution of "0": 
+[Error] Polygons' and target grid's extent do not intersect.[Error] executing tool:
+Shapes to Grid
+If you want to suppress this error, set "ignore_stderr" to True when executing.
+2026-01-13 15:41:01 - root - ERROR - Simulation failed: A stderr was detected after the execution of "0": 
+[Error] Polygons' and target grid's extent do not intersect.[Error] executing tool:
+Shapes to Grid
+If you want to suppress this error, set "ignore_stderr" to True when executing.
+Traceback (most recent call last):
+  File "D:\Master\DigitalTwins\debris-flow-digital-twins\scripts\run_gpp_simulation.py", line 47, in main
+    results = gpp.run_gpp_simulation(
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Master\DigitalTwins\debris-flow-digital-twins\src\models\runout\saga_gpp_runner.py", line 65, in run_gpp_simulation
+    shapes_to_grid.execute(
+  File "D:\conda\anaconda3\envs\dt_env\Lib\site-packages\PySAGA_cmd\saga.py", line 587, in execute
+    return ToolOutput(self, output, ignore_stderr)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 6, in __init__
+  File "D:\conda\anaconda3\envs\dt_env\Lib\site-packages\PySAGA_cmd\saga.py", line 768, in __post_init__
+    raise ExecutionError(read, self.saga_executable)
+PySAGA_cmd.saga.ExecutionError: A stderr was detected after the execution of "0": 
+[Error] Polygons' and target grid's extent do not intersect.[Error] executing tool:
+Shapes to Grid
+If you want to suppress this error, set "ignore_stderr" to True when executing.
+2026-01-13 15:55:12 - root - INFO - SAGA GIS GPP DEBRIS FLOW SIMULATION
+2026-01-13 15:55:12 - root - INFO - SAGA GIS GPP DEBRIS FLOW SIMULATION
+2026-01-13 15:55:12 - root - INFO - 
+Loading release areas from: data\processed\release_areas\release_polygon_3.shp
+2026-01-13 15:55:12 - root - INFO - 
+Loading release areas from: data\processed\release_areas\release_polygon_3.shp
+2026-01-13 15:55:17 - root - INFO - Running GPP Simulation
+2026-01-13 15:55:17 - root - INFO - Running GPP Simulation
+2026-01-13 15:55:17 - src.models.runout.saga_gpp_runner - INFO - SAGA GIS GPP DEBRIS FLOW SIMULATION
+2026-01-13 15:55:17 - src.models.runout.saga_gpp_runner - INFO - SAGA GIS GPP DEBRIS FLOW SIMULATION
+2026-01-13 15:55:17 - src.models.runout.saga_gpp_runner - INFO - 
+Step 1: Converting release areas to raster...
+2026-01-13 15:55:17 - src.models.runout.saga_gpp_runner - INFO - 
+Step 1: Converting release areas to raster...
+2026-01-13 15:55:23 - src.models.runout.saga_gpp_runner - INFO - Release areas converted to raster with unique IDs
+2026-01-13 15:55:23 - src.models.runout.saga_gpp_runner - INFO - Release areas converted to raster with unique IDs
+2026-01-13 15:55:28 - src.models.runout.saga_gpp_runner - INFO - Resampled release grid
+2026-01-13 15:55:28 - src.models.runout.saga_gpp_runner - INFO - Resampled release grid
+2026-01-13 15:55:28 - src.models.runout.saga_gpp_runner - INFO - 
+Step 2: Running GPP model...
+2026-01-13 15:55:28 - src.models.runout.saga_gpp_runner - INFO - 
+Step 2: Running GPP model...
+2026-01-13 15:55:28 - src.models.runout.saga_gpp_runner - INFO -   Process path model: Random Walk
+2026-01-13 15:55:28 - src.models.runout.saga_gpp_runner - INFO -   Process path model: Random Walk
+2026-01-13 15:55:28 - src.models.runout.saga_gpp_runner - INFO -   Friction model: 5 (4=1-param, 5=PCM)
+2026-01-13 15:55:28 - src.models.runout.saga_gpp_runner - INFO -   Friction model: 5 (4=1-param, 5=PCM)
+2026-01-13 15:55:28 - src.models.runout.saga_gpp_runner - INFO -   Friction mu: 0.1
+2026-01-13 15:55:28 - src.models.runout.saga_gpp_runner - INFO -   Friction mu: 0.1
+2026-01-13 15:55:28 - src.models.runout.saga_gpp_runner - INFO -   Mass-to-drag ratio: 200.0 m
+2026-01-13 15:55:28 - src.models.runout.saga_gpp_runner - INFO -   Mass-to-drag ratio: 200.0 m
+2026-01-13 15:55:28 - src.models.runout.saga_gpp_runner - INFO -   Iterations: 10
+2026-01-13 15:55:28 - src.models.runout.saga_gpp_runner - INFO -   Iterations: 10
+2026-01-13 19:21:10 - src.models.runout.saga_gpp_runner - INFO - GPP simulation completed successfully
+2026-01-13 19:21:10 - src.models.runout.saga_gpp_runner - INFO - GPP simulation completed successfully
+2026-01-13 19:21:10 - src.models.runout.saga_gpp_runner - INFO - SIMULATION COMPLETE
+2026-01-13 19:21:10 - src.models.runout.saga_gpp_runner - INFO - SIMULATION COMPLETE
+2026-01-13 19:21:10 - src.models.runout.saga_gpp_runner - INFO - 
+Outputs saved to: data\processed\simulations\sim_003
+2026-01-13 19:21:10 - src.models.runout.saga_gpp_runner - INFO - 
+Outputs saved to: data\processed\simulations\sim_003
+2026-01-13 19:21:10 - src.models.runout.saga_gpp_runner - INFO -   - Process area: process_area.sdat
+2026-01-13 19:21:10 - src.models.runout.saga_gpp_runner - INFO -   - Process area: process_area.sdat
+2026-01-13 19:21:10 - src.models.runout.saga_gpp_runner - INFO -   - Stop positions: stop_positions.sdat
+2026-01-13 19:21:10 - src.models.runout.saga_gpp_runner - INFO -   - Stop positions: stop_positions.sdat
+2026-01-13 19:21:10 - src.models.runout.saga_gpp_runner - INFO -   - Max velocity: max_velocity.sdat
+2026-01-13 19:21:10 - src.models.runout.saga_gpp_runner - INFO -   - Max velocity: max_velocity.sdat

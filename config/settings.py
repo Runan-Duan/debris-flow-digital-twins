@@ -21,6 +21,7 @@ class Settings(BaseSettings):
     RAW_DATA_DIR: Path = Path("./data/raw")
     PROCESSED_DATA_DIR: Path = Path("./data/processed")
     EXTERNAL_DATA_DIR: Path = Path("./data/external")
+    DATABASE_DIR: Path = Path("./database")
     
     # Weather
     OPENWEATHER_API_KEY: Optional[str] = None
@@ -38,11 +39,6 @@ class Settings(BaseSettings):
     DEM_RESOLUTION: float = 1.0
     DEM_EPSG: int = 4326
     CHANGE_DETECTION_THRESHOLD: float = 0.5
-    
-    # Flow-R
-    FLOWR_PATH: Path = Path("./flow-r")  # Default relative path
-    FLOWR_FRICTION_ANGLE: float = 32.0
-    FLOWR_MIN_VELOCITY: float = 0.1
     
     # Rainfall Threshold
     THRESHOLD_ALPHA: float = 20.0

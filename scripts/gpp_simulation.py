@@ -20,8 +20,8 @@ def main():
     
     # Input paths
     filled_dem = settings.PROCESSED_DATA_DIR / "preprocessing" / "dem_filled.sdat"
-    release_areas_shp = settings.PROCESSED_DATA_DIR / "release_areas" / "release_polygon_2.shp"
-    output_dir = settings.PROCESSED_DATA_DIR / "simulations" / "sim_002"
+    release_areas_shp = settings.PROCESSED_DATA_DIR / "release_areas" / "release_polygon_3.shp"
+    output_dir = settings.PROCESSED_DATA_DIR / "simulations" / "sim_003"
     
     # Verify inputs exist
     if not filled_dem.exists():

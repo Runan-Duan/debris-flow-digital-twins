@@ -1,4 +1,9 @@
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
 from configparser import ConfigParser
+from settings import settings
 
 def load_config(filename='database.ini', section='postgresql'):
     parser = ConfigParser()
@@ -16,5 +21,6 @@ def load_config(filename='database.ini', section='postgresql'):
     return config
 
 if __name__ == '__main__':
-    config = load_config()
+    database = settings.DATABASE_DIR / 'database.ini'
+    config = load_config(filename=database)
     print(config)

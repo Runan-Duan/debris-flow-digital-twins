@@ -225,6 +225,7 @@ class SAGAReleaseDetector:
             logger.error(f" Combining criteria failed: {e}")
             raise
         
+        return release_raster
         # Convert raster to polygons
         # logger.info("\n7. Converting raster to polygons...")
         # raw_polygons = output_dir / "release_raw.shp"
@@ -304,5 +305,5 @@ class SAGAReleaseDetector:
         # logger.info("RELEASE AREA IDENTIFICATION COMPLETE")
         # logger.info(f"Output shapefile: {release_polygons}")
         
-        return release_raster
+
     

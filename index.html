@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <script src="https://cesium.com/downloads/cesiumjs/releases/1.137/Build/Cesium/Cesium.js"></script>
+  <link href="https://cesium.com/downloads/cesiumjs/releases/1.137/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+
+  <style>
+    html, body, #cesiumContainer {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="cesiumContainer"></div>
+
+  <script type="module">
+    Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxN2U4ODQ4MC02YmE3LTQzZDMtYmZlMS0xNGE1NDVjYjVjY2QiLCJpZCI6MzU5MDI4LCJpYXQiOjE3NjI4MDE3MDB9.5HZG2c0iyHn_REC3zQ6cPJHqcfShc1_GX4lSeAE7s2U';
+
+    async function start() {
+
+      // --- Viewer with Cesium World Terrain ---
+      const viewer = new Cesium.Viewer('cesiumContainer', {
+        terrain: await Cesium.Terrain.fromWorldTerrain(),
+        baseLayerPicker: false
+      });
+
+      // --- Ortho imagery (GeoServer WMS) ---
+      const ortho = viewer.imageryLayers.addImageryProvider(
+        new Cesium.WebMapServiceImageryProvider({
+          url: 'http://localhost:8888/geoserver/wms',
+          layers: 'tirol:ortho_image',
+          parameters: {
+            service: 'WMS',
+            version: '1.1.1',
+            request: 'GetMap',
+            styles: '',
+            format: 'image/png',
+            transparent: true,
+            srs: 'EPSG:3857'
+          },
+          credit: 'TIRIS Ortho'
+        })
+      );
+
+      // --- DEM hillshade (GeoServer WMS) ---
+      const demHillshade = viewer.imageryLayers.addImageryProvider(
+        new Cesium.WebMapServiceImageryProvider({
+          url: 'http://localhost:8888/geoserver/wms',
+          layers: 'tirol:dem',
+          parameters: {
+            service: 'WMS',
+            version: '1.1.1',
+            request: 'GetMap',
+            styles: 'hillshade',   // IMPORTANT: use hillshade style
+            format: 'image/png',
+            transparent: true,
+            srs: 'EPSG:3857'
+          },
+          credit: 'TIRIS DEM'
+        })
+      );
+
+      // Put hillshade above ortho
+      viewer.imageryLayers.raiseToTop(demHillshade);
+      demHillshade.alpha = 0.4;
+
+      // --- Fly to Tirol ---
+      const aoiRectangle = Cesium.Rectangle.fromDegrees(
+        11.31, // west
+        47.21, // south
+        11.45, // east
+        47.32  // north
+        );
+
+      viewer.camera.flyTo({
+        destination: aoiRectangle,
+        duration: 2
+        });
+
+    //   viewer.camera.flyTo({
+    //     destination: Cesium.Cartesian3.fromDegrees(
+    //       11.39,
+    //       47.26,
+    //       15000
+    //     ),
+    //     orientation: {
+    //       pitch: Cesium.Math.toRadians(-45)
+    //     }
+    //   });
+    }
+
+    start();
+  </script>
+</body>
+</html>
