@@ -3,8 +3,13 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
+from selenium.common.exceptions import TimeoutException
 from datetime import datetime, timedelta
 import re
+import time
+from config.logging import setup_logging
+
+logger = setup_logging()
 
 
 class AWEKASScraper:
@@ -40,23 +45,42 @@ class AWEKASScraper:
         date_text = date_element.text
         date_obj = datetime.strptime(date_text, "%B %d, %Y").date()
         
-        table = self.wait.until(
-            EC.visibility_of_element_located(
-                (By.XPATH, "//div[contains(@class,'card') and contains(@class,'visible')]//table")
+        # table = self.wait.until(
+        #     EC.visibility_of_element_located(
+        #         (By.XPATH, "//div[contains(@class,'card') and contains(@class,'visible')]//table")
+        #     )
+        # )
+        
+        # rows = table.find_elements(By.XPATH, ".//tbody/tr")
+        rows_count = len(
+            self.driver.find_elements(
+                By.XPATH,
+                "//div[contains(@class,'card') and contains(@class,'visible')]//tbody/tr"
             )
         )
-        
-        rows = table.find_elements(By.XPATH, ".//tbody/tr")
+
         day_data = []
         
-        for row in rows:
+        # for row in rows:
+        for i in range(rows_count):
+            rows = self.driver.find_elements(
+                By.XPATH,
+                "//div[contains(@class,'card') and contains(@class,'visible')]//tbody/tr"
+            )
+
+            row = rows[i]
             cells = row.find_elements(By.TAG_NAME, "td")
             
             def clean_num(text):
                 clean = re.sub(r"[^\d\.\-]", "", text)
                 return float(clean) if clean else 0.0
             
-            time_str = cells[0].text
+            time_str = cells[0].text.strip()
+
+            # Skip summary rows (max / min / avg)
+            if not re.match(r"^\d{2}:\d{2}$", time_str):
+                continue
+
             timestamp = datetime.combine(
                 date_obj,
                 datetime.strptime(time_str, "%H:%M").time()
@@ -91,6 +115,7 @@ class AWEKASScraper:
     
     def scrape_multiple_days(self, days=14):
         self.driver.get(self.urls['table'])
+        self.accept_cookies_ionic(self.driver)
         
         all_data = []
         dates_collected = []
@@ -104,6 +129,7 @@ class AWEKASScraper:
             current_date_text = date_element.text
             
             date_obj, day_data = self.scrape_one_day()
+            logger.info(f"Collect data from {date_obj}")
             dates_collected.append(date_obj)
             all_data.extend(day_data)
             
@@ -114,3 +140,36 @@ class AWEKASScraper:
     
     def close(self):
         self.driver.quit()
+
+    def accept_cookies_ionic(self,driver, timeout=10):
+        try:
+            # Wait until ion-modal is present
+            WebDriverWait(driver, timeout).until(
+                lambda d: d.execute_script(
+                    "return document.querySelector('ion-modal#cookie-banner') !== null"
+                )
+            )
+
+            # Click "Accept all" inside Shadow DOM
+            driver.execute_script("""
+                const modal = document.querySelector('ion-modal#cookie-banner');
+                if (!modal) return;
+
+                const root = modal.shadowRoot;
+                if (!root) return;
+
+                const buttons = modal.querySelectorAll('ion-button');
+                for (const btn of buttons) {
+                    if (btn.innerText.trim().toLowerCase().includes('accept')) {
+                        btn.click();
+                        return;
+                    }
+                }
+            """)
+            logger.info("Cookie banner accepted")
+
+            # Small wait to allow modal to close
+            time.sleep(0.5)
+
+        except TimeoutException:
+            logger.info("No cookie banner found")

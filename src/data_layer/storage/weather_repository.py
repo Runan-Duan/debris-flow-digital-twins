@@ -111,9 +111,9 @@ class WeatherRepository:
     def get_current_event_metrics(self, target_date=None):
         if target_date is None:
             target_date = datetime.now()
-        
+
         lookback = target_date - timedelta(hours=48)
-        
+
         with psycopg2.connect(**self.config) as conn:
             with conn.cursor() as cur:
                 cur.execute("""
@@ -122,23 +122,36 @@ class WeatherRepository:
                     WHERE timestamp >= %s AND timestamp <= %s
                     ORDER BY timestamp DESC
                 """, (lookback, target_date))
-                
+
                 rows = cur.fetchall()
-                
+
                 if not rows:
-                    return None
-                
-                max_intensity = max([r[1] for r in rows if r[1]])
-                
+                    return {
+                        'max_intensity_mmh': 0.0,
+                        'duration_h': 0,
+                        'total_mm': 0.0
+                    }
+
+                rain_values = [r[1] for r in rows if r[1] and r[1] > 0]
+
+                if not rain_values:
+                    return {
+                        'max_intensity_mmh': 0.0,
+                        'duration_h': 0,
+                        'total_mm': 0.0
+                    }
+
+                max_intensity = max(rain_values)
+
                 duration_h = 0
                 for ts, precip in rows:
                     if precip and precip > 0:
                         duration_h += 1
                     else:
                         break
-                
-                total_event = sum([r[1] for r in rows if r[1]])
-                
+
+                total_event = sum(rain_values)
+
                 return {
                     'max_intensity_mmh': max_intensity,
                     'duration_h': duration_h,
