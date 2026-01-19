@@ -1,31 +1,26 @@
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+from configparser import ConfigParser
 from config.settings import settings
 
-# Create database engine
-engine = create_engine(
-    settings.DATABASE_URL,
-    pool_pre_ping=True,  # Verify connections before using
-    echo=settings.LOG_LEVEL == "DEBUG"
-)
+def load_config(filename='database/database.ini', section='postgresql'):
+    parser = ConfigParser()
+    parser.read(filename)
 
-# Session factory
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+    # get section, default to postgresql
+    config = {}
+    if parser.has_section(section):
+        params = parser.items(section)
+        for param in params:
+            config[param[0]] = param[1]
+    else:
+        raise Exception('Section {0} not found in the {1} file'.format(section, filename))
 
-# Base class for models
-Base = declarative_base()
+    return config
 
-
-def get_db():
-    """Dependency for FastAPI to get database session"""
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
-
-def init_db():
-    """Initialize database - create all tables"""
-    Base.metadata.create_all(bind=engine)
+if __name__ == '__main__':
+    database = settings.DATABASE_DIR / 'database.ini'
+    config = load_config(filename=database)
+    print(config)
