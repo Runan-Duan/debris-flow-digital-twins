@@ -14,7 +14,7 @@ def main():
     
     scraper = AWEKASScraper(station_id="34362", headless=True)
     
-    days_to_collect = 14
+    days_to_collect = 85
     print(f"Scraping last {days_to_collect} days...")
     
     all_data, dates = scraper.scrape_multiple_days(days=days_to_collect)

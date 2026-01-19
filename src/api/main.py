@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from src.api.routes import weather, risk
+from src.api.routes import weather, risk, layers
 
 app = FastAPI(
     title="Debris Flow Digital Twin API",
@@ -17,6 +17,7 @@ app.add_middleware(
 
 app.include_router(weather.router)
 app.include_router(risk.router)
+app.include_router(layers.router)
 
 
 @app.get("/")
@@ -26,7 +27,8 @@ async def root():
         "version": "1.0.0",
         "endpoints": {
             "weather": "/weather",
-            "risk": "/risk"
+            "risk": "/risk",
+            "layers": "/layers",
         }
     }
 
