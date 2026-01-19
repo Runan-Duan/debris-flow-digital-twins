@@ -1,17 +1,10 @@
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
-import numpy as np
 from datetime import datetime, timedelta
-from sqlalchemy import create_engine, Column, Integer, Float, String, DateTime, Boolean, JSON
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-from geoalchemy2 import Geometry
+import re
 import logging
-from pathlib import Path
-from typing import Dict, List, Tuple, Optional
-import time
-import json
 
 
 # Configure logging
@@ -21,135 +14,160 @@ logger = logging.getLogger(__name__)
 # Database Models
 Base = declarative_base()
 
-class AWEKASScraper:
+class AWEKASTableScraper:
     """
-    Web scraper for AWEKAS weather station data
-    
-    AWEKAS displays data dynamically, so we'll scrape the current readings
-    and build historical database through regular polling
+    Scraper for AWEKAS table page
     """
     
-    def __init__(self, station_id: str = "34362", base_url: str = "https://stationsweb.awekas.at"):
+    def __init__(self, station_id: str = "34362"):
         self.station_id = station_id
-        self.base_url = base_url
+        self.base_url = "https://stationsweb.awekas.at"
+        self.table_url = f"{self.base_url}/en/{self.station_id}/index-tab"
+        
+        # Setup HTTP session
         self.session = requests.Session()
         self.session.headers.update({
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
         })
+        
+        logger.info(f" Scraper initialized for station {station_id}")
     
-    def scrape_current_data(self) -> Dict:
-        """
-        Scrape current weather data from AWEKAS station page
-        
-        Returns:
-            Dictionary with current weather parameters
-        """
-        url = f"{self.base_url}/en/{self.station_id}/home"
-        
+    def fetch_table_page(self) -> BeautifulSoup:
+        """Fetch the table page HTML"""
         try:
-            logger.info(f"Fetching data from: {url}")
-            response = self.session.get(url, timeout=30)
+            logger.info(f" Fetching: {self.table_url}")
+            response = self.session.get(self.table_url, timeout=30)
             response.raise_for_status()
             
             soup = BeautifulSoup(response.content, 'html.parser')
+            logger.info(f" Page fetched ({len(response.content)} bytes)")
             
-            # Extract data from the page structure
-            # Note: AWEKAS structure may vary - inspect the page to find exact selectors
-            data = {
-                'timestamp': datetime.utcnow(),
-                'station_id': self.station_id,
-                'rainfall_mm': self._extract_value(soup, 'rainfall', 'rain'),
-                'rainfall_rate_mmh': self._extract_value(soup, 'rain rate', 'rainrate'),
-                'rainfall_daily_mm': self._extract_value(soup, 'rain today', 'dailyrain'),
-                'temperature_c': self._extract_value(soup, 'temperature', 'temp'),
-                'humidity_percent': self._extract_value(soup, 'humidity', 'hum'),
-                'pressure_hpa': self._extract_value(soup, 'pressure', 'baro'),
-                'wind_speed_kmh': self._extract_value(soup, 'wind', 'windspeed'),
-                'wind_direction_deg': self._extract_value(soup, 'wind direction', 'winddir'),
-            }
-            
-            logger.info(f"Data scraped: Rainfall={data['rainfall_mm']}mm, Temp={data['temperature_c']}°C")
-            return data
+            return soup
             
         except Exception as e:
-            logger.error(f"Error scraping AWEKAS: {e}")
+            logger.error(f" Error fetching page: {e}")
             return None
     
-    def _extract_value(self, soup: BeautifulSoup, label: str, alt_class: str = None) -> Optional[float]:
-        """
-        Extract numeric value from HTML based on label or class
-        
-        Args:
-            soup: BeautifulSoup object
-            label: Text label to search for
-            alt_class: Alternative CSS class name
-        
-        Returns:
-            Extracted numeric value or None
-        """
+    def extract_date_from_page(self, soup: BeautifulSoup) -> datetime.date:
+        """Extract date from the date card"""
         try:
-            # Method 1: Search by label text
-            elements = soup.find_all(string=lambda text: text and label.lower() in text.lower())
-            for elem in elements:
-                parent = elem.parent
-                # Look for numeric value in siblings or parent
-                if parent:
-                    value_elem = parent.find_next(class_=lambda x: x and ('value' in x or 'data' in x))
-                    if value_elem:
-                        return self._parse_number(value_elem.text)
+            date_card = soup.find('div', class_='date card')
+            if date_card:
+                date_text_elem = date_card.find('ion-text')
+                if date_text_elem:
+                    date_text = date_text_elem.get_text(strip=True)
+                    logger.info(f" Date: {date_text}")
+                    
+                    # Parse "January 18, 2026"
+                    date_obj = datetime.strptime(date_text, "%B %d, %Y")
+                    return date_obj.date()
             
-            # Method 2: Search by class name
-            if alt_class:
-                elem = soup.find(class_=alt_class)
-                if elem:
-                    return self._parse_number(elem.text)
+            logger.warning(" Using today's date as fallback")
+            return datetime.now().date()
             
-            # Method 3: Look in table structure (common in AWEKAS)
-            tables = soup.find_all('table')
-            for table in tables:
-                rows = table.find_all('tr')
+        except Exception as e:
+            logger.error(f" Date extraction error: {e}")
+            return datetime.now().date()
+    
+    def parse_table_data(self, soup: BeautifulSoup) -> pd.DataFrame:
+        """Parse the weather data table"""
+        try:
+            table_date = self.extract_date_from_page(soup)
+            
+            # Find table
+            table = soup.find('table')
+            if not table:
+                logger.error(" No table found")
+                return pd.DataFrame()
+            
+            # Extract headers
+            headers = []
+            thead = table.find('thead')
+            if thead:
+                header_row = thead.find('tr')
+                headers = [th.get_text(strip=True) for th in header_row.find_all('th')]
+                logger.info(f" Headers: {headers}")
+            
+            # Extract rows
+            data_rows = []
+            tbody = table.find('tbody')
+            if tbody:
+                rows = tbody.find_all('tr')
+                logger.info(f"Found {len(rows)} rows")
+                
                 for row in rows:
-                    cells = row.find_all(['td', 'th'])
-                    for i, cell in enumerate(cells):
-                        if label.lower() in cell.text.lower() and i + 1 < len(cells):
-                            return self._parse_number(cells[i + 1].text)
+                    cells = row.find_all('td')
+                    if cells:
+                        row_data = [cell.get_text(strip=True) for cell in cells]
+                        data_rows.append(row_data)
             
-            return None
+            # Create DataFrame
+            df = pd.DataFrame(data_rows, columns=headers)
+            df = self._clean_dataframe(df, table_date)
             
-        except Exception as e:
-            logger.debug(f"Could not extract {label}: {e}")
-            return None
-    
-    def _parse_number(self, text: str) -> Optional[float]:
-        """Extract numeric value from text"""
-        try:
-            # Remove common units and symbols
-            clean = text.strip().replace('mm', '').replace('°C', '').replace('%', '')
-            clean = clean.replace('hPa', '').replace('km/h', '').replace(',', '.')
-            
-            # Extract first number found
-            import re
-            match = re.search(r'-?\d+\.?\d*', clean)
-            if match:
-                return float(match.group())
-            return None
-        except:
-            return None
-    
-    def scrape_historical_csv(self, csv_url: str) -> pd.DataFrame:
-        """
-        If AWEKAS provides CSV export, parse it
-        
-        Args:
-            csv_url: URL to CSV file (if available)
-        
-        Returns:
-            DataFrame with historical data
-        """
-        try:
-            df = pd.read_csv(csv_url, parse_dates=['timestamp'])
-            logger.info(f"Loaded {len(df)} historical records from CSV")
+            logger.info(f" Parsed {len(df)} records")
             return df
+            
         except Exception as e:
-            logger.error(f"Error loading CSV: {e}")
+            logger.error(f" Parsing error: {e}")
+            import traceback
+            traceback.print_exc()
             return pd.DataFrame()
+    
+    def _clean_dataframe(self, df: pd.DataFrame, table_date: datetime.date) -> pd.DataFrame:
+        """Clean and convert DataFrame"""
+        if df.empty:
+            return df
+        
+        # Create timestamps
+        def create_timestamp(time_str):
+            try:
+                time_obj = datetime.strptime(time_str, "%H:%M").time()
+                return datetime.combine(table_date, time_obj)
+            except:
+                return None
+        
+        df['timestamp'] = df['Time'].apply(create_timestamp)
+        
+        # Clean numbers
+        def clean_number(value):
+            try:
+                clean = re.sub(r'[°CkKmMhHpPaA%]', '', value)
+                clean = clean.strip()
+                return float(clean)
+            except:
+                return None
+        
+        # Map columns
+        column_mapping = {
+            'Temperature': 'temperature_c',
+            'Humidity': 'humidity_percent',
+            'Air pressure': 'pressure_hpa',
+            'Wind speed': 'wind_speed_kmh',
+            'Gust speed': 'gust_speed_kmh',
+            'Precipitation': 'precipitation_mm'
+        }
+        
+        for old_col, new_col in column_mapping.items():
+            if old_col in df.columns:
+                df[new_col] = df[old_col].apply(clean_number)
+        
+        df['station_id'] = self.station_id
+        
+        # Select final columns
+        final_columns = ['station_id', 'timestamp', 'temperature_c', 'humidity_percent',
+                        'pressure_hpa', 'wind_speed_kmh', 'gust_speed_kmh', 
+                        'precipitation_mm']
+        
+        df = df[final_columns]
+        df = df.dropna(subset=['timestamp'])
+        
+        return df
+    
+    def scrape_current_day(self) -> pd.DataFrame:
+        """Scrape current day's data"""
+        soup = self.fetch_table_page()
+        if soup:
+            return self.parse_table_data(soup)
+        return pd.DataFrame()

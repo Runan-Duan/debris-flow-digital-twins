@@ -1,17 +1,11 @@
-import requests
-from bs4 import BeautifulSoup
 import pandas as pd
-import numpy as np
 from datetime import datetime, timedelta
-from sqlalchemy import create_engine, Column, Integer, Float, String, DateTime, Boolean, JSON
+from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from geoalchemy2 import Geometry
+import re
 import logging
-from pathlib import Path
-from typing import Dict, List, Tuple, Optional
-import time
-import json
+from src.data_layer.preprocessing.weather_collector import WeatherData
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -20,9 +14,9 @@ logger = logging.getLogger(__name__)
 # Database Models
 Base = declarative_base()
 
-class RainfallDatabase:
+class WeatherDatabase:
     """
-    Database manager for rainfall data storage and retrieval
+    Database manager for weather data storage
     """
     
     def __init__(self, connection_string: str):
@@ -31,213 +25,333 @@ class RainfallDatabase:
         
         Args:
             connection_string: PostgreSQL connection string
-                e.g., "postgresql://user:password@localhost:5432/debris_flow_dt"
+                Example: "postgresql://user:password@localhost:5432/debris_flow_dt"
         """
-        self.engine = create_engine(connection_string)
+        self.engine = create_engine(connection_string, echo=False)
+        
+        # Create tables if they don't exist
         Base.metadata.create_all(self.engine)
+        
+        # Create session
         Session = sessionmaker(bind=self.engine)
         self.session = Session()
+        
         logger.info("✓ Database connection established")
     
-    def store_rainfall_data(self, data: Dict) -> bool:
+    def store_dataframe(self, df: pd.DataFrame, if_exists: str = 'append') -> int:
         """
-        Store scraped rainfall data to database
+        Store DataFrame to database
         
         Args:
-            data: Dictionary with rainfall parameters
+            df: DataFrame with weather data
+            if_exists: 'append' or 'replace'
         
         Returns:
-            True if successful
+            Number of records inserted
         """
-        try:
-            record = RainfallData(**data)
-            self.session.add(record)
-            self.session.commit()
-            logger.info(f"✓ Stored rainfall data: {data['timestamp']}")
-            return True
-        except Exception as e:
-            self.session.rollback()
-            logger.error(f"✗ Error storing data: {e}")
-            return False
-    
-    def get_rainfall_timeseries(self, start_date: datetime, end_date: datetime) -> pd.DataFrame:
-        """
-        Retrieve rainfall time series from database
-        
-        Args:
-            start_date: Start of time period
-            end_date: End of time period
-        
-        Returns:
-            DataFrame with rainfall data
-        """
-        query = f"""
-            SELECT timestamp, rainfall_mm, rainfall_rate_mmh, temperature_c
-            FROM rainfall_data
-            WHERE timestamp >= '{start_date}' AND timestamp <= '{end_date}'
-            ORDER BY timestamp
-        """
-        df = pd.read_sql(query, self.engine)
-        logger.info(f"✓ Retrieved {len(df)} rainfall records")
-        return df
-    
-    def calculate_antecedent_rainfall(self, target_date: datetime, days: int = 7) -> float:
-        """
-        Calculate cumulative rainfall before target date
-        
-        Args:
-            target_date: Reference date
-            days: Number of days to look back
-        
-        Returns:
-            Cumulative rainfall in mm
-        """
-        start = target_date - timedelta(days=days)
-        query = f"""
-            SELECT SUM(rainfall_mm) as total
-            FROM rainfall_data
-            WHERE timestamp >= '{start}' AND timestamp < '{target_date}'
-        """
-        result = pd.read_sql(query, self.engine)
-        total = result.iloc[0]['total'] if not result.empty else 0.0
-        return float(total) if total else 0.0
-
-
-class RainfallEventDetector:
-    """
-    Detect and characterize rainfall events for debris flow analysis
-    
-    Scientific basis:
-    - Debris flows are triggered by rainfall intensity + antecedent moisture
-    - I-D (Intensity-Duration) thresholds are empirically derived
-    - Effective antecedent rainfall uses exponential decay weighting
-    """
-    
-    def __init__(self, db_engine):
-        self.db = db_engine
-        self.min_inter_event_hours = 6  # Separate events by 6-hour dry period
-        self.min_rainfall_mm = 5  # Minimum to consider as event
-    
-    def detect_events(self, start_date: datetime, end_date: datetime) -> List[Dict]:
-        """
-        Identify discrete rainfall events from continuous data
-        
-        Args:
-            start_date: Start of analysis period
-            end_date: End of analysis period
-        
-        Returns:
-            List of rainfall event dictionaries
-        """
-        # Get time series
-        query = f"""
-            SELECT timestamp, rainfall_mm, rainfall_rate_mmh
-            FROM rainfall_data
-            WHERE timestamp >= '{start_date}' AND timestamp <= '{end_date}'
-            ORDER BY timestamp
-        """
-        df = pd.read_sql(query, self.db)
-        
         if df.empty:
-            return []
+            logger.warning("Empty DataFrame, nothing to store")
+            return 0
         
-        # Identify event boundaries
-        df['time_diff_hours'] = df['timestamp'].diff().dt.total_seconds() / 3600
-        df['new_event'] = (df['time_diff_hours'] > self.min_inter_event_hours) | df['time_diff_hours'].isna()
-        df['event_id'] = df['new_event'].cumsum()
-        
-        # Aggregate events
-        events = []
-        for event_id, group in df.groupby('event_id'):
-            if group['rainfall_mm'].sum() < self.min_rainfall_mm:
-                continue  # Skip tiny events
+        try:
+            # Use pandas to_sql for bulk insert
+            records_before = self.session.query(WeatherData).count()
             
-            event = {
-                'start_time': group['timestamp'].min(),
-                'end_time': group['timestamp'].max(),
-                'duration_hours': (group['timestamp'].max() - group['timestamp'].min()).total_seconds() / 3600,
-                'total_rainfall_mm': group['rainfall_mm'].sum(),
-                'max_intensity_mmh': group['rainfall_rate_mmh'].max(),
-                'mean_intensity_mmh': group['rainfall_rate_mmh'].mean(),
-            }
-            
-            # Calculate peak 15-minute intensity (if data resolution allows)
-            event['peak_15min_intensity_mmh'] = self._calculate_peak_intensity(
-                group, window_minutes=15
+            df.to_sql(
+                'weather_data_hourly',
+                self.engine,
+                if_exists=if_exists,
+                index=False,
+                method='multi',
+                chunksize=100
             )
             
-            events.append(event)
-        
-        logger.info(f"✓ Detected {len(events)} rainfall events")
-        return events
+            records_after = self.session.query(WeatherData).count()
+            inserted = records_after - records_before
+            
+            logger.info(f"✓ Stored {inserted} new records to database")
+            return inserted
+            
+        except Exception as e:
+            logger.error(f"✗ Error storing data: {e}")
+            # If it's a duplicate error, that's okay
+            if 'unique constraint' in str(e).lower():
+                logger.info("⚠ Some records already exist (duplicates skipped)")
+                return 0
+            raise
     
-    def _calculate_peak_intensity(self, df: pd.DataFrame, window_minutes: int = 15) -> float:
-        """Calculate maximum rainfall intensity over moving window"""
-        try:
-            df_sorted = df.sort_values('timestamp')
-            df_sorted.set_index('timestamp', inplace=True)
-            rolling_sum = df_sorted['rainfall_mm'].rolling(f'{window_minutes}min').sum()
-            peak_mm = rolling_sum.max()
-            # Convert to mm/hour
-            return (peak_mm / window_minutes) * 60
-        except:
-            return df['rainfall_rate_mmh'].max()
-    
-    def calculate_effective_antecedent_rainfall(self, 
-                                                target_date: datetime,
-                                                days_back: int = 14,
-                                                decay_factor: float = 0.84) -> float:
+    def get_data_range(self, start_date: datetime, end_date: datetime) -> pd.DataFrame:
         """
-        Calculate effective antecedent rainfall with exponential decay
-        
-        Based on Chleborad et al. (2006) - recent rainfall weighted more heavily
+        Retrieve data for date range
         
         Args:
-            target_date: Reference date
-            days_back: How many days to include
-            decay_factor: Exponential decay (0.84 common for debris flows)
+            start_date: Start datetime
+            end_date: End datetime
         
         Returns:
-            Effective antecedent rainfall in mm
+            DataFrame with weather data
         """
-        start_date = target_date - timedelta(days=days_back)
+        query = f"""
+            SELECT * FROM weather_data_hourly
+            WHERE timestamp >= '{start_date}' 
+              AND timestamp <= '{end_date}'
+            ORDER BY timestamp
+        """
+        
+        df = pd.read_sql(query, self.engine)
+        logger.info(f"✓ Retrieved {len(df)} records from database")
+        
+        return df
+    
+    def get_latest_timestamp(self, station_id: str) -> datetime:
+        """
+        Get the most recent timestamp for a station
+        
+        Args:
+            station_id: Station ID
+        
+        Returns:
+            Latest timestamp or None
+        """
+        query = f"""
+            SELECT MAX(timestamp) as latest
+            FROM weather_data_hourly
+            WHERE station_id = '{station_id}'
+        """
+        
+        result = pd.read_sql(query, self.engine)
+        
+        if not result.empty and result.iloc[0]['latest'] is not None:
+            return result.iloc[0]['latest']
+        
+        return None
+    
+    def calculate_daily_precipitation(self, date: datetime.date) -> float:
+        """
+        Calculate total precipitation for a day
+        
+        Args:
+            date: Date to calculate for
+        
+        Returns:
+            Total precipitation in mm
+        """
+        start = datetime.combine(date, datetime.min.time())
+        end = datetime.combine(date, datetime.max.time())
         
         query = f"""
-            SELECT DATE(timestamp) as date, SUM(rainfall_mm) as daily_rain
-            FROM rainfall_data
-            WHERE timestamp >= '{start_date}' AND timestamp < '{target_date}'
-            GROUP BY DATE(timestamp)
-            ORDER BY date DESC
+            SELECT SUM(precipitation_mm) as total
+            FROM weather_data_hourly
+            WHERE timestamp >= '{start}' AND timestamp <= '{end}'
         """
-        df = pd.read_sql(query, self.db)
         
-        if df.empty:
-            return 0.0
+        result = pd.read_sql(query, self.engine)
         
-        # Apply exponential decay weights
-        df['days_ago'] = (target_date.date() - df['date']).dt.days
-        df['weight'] = decay_factor ** df['days_ago']
-        df['weighted_rain'] = df['daily_rain'] * df['weight']
+        if not result.empty and result.iloc[0]['total'] is not None:
+            return float(result.iloc[0]['total'])
         
-        effective_rainfall = df['weighted_rain'].sum()
-        return effective_rainfall
+        return 0.0
     
-    def calculate_soil_saturation_index(self, 
-                                       total_rainfall_mm: float,
-                                       antecedent_mm: float,
-                                       field_capacity_mm: float = 150) -> float:
+    def get_statistics(self) -> dict:
         """
-        Estimate soil saturation (0-1 scale)
-        
-        Args:
-            total_rainfall_mm: Event rainfall
-            antecedent_mm: Antecedent rainfall
-            field_capacity_mm: Soil water holding capacity (typical 100-200mm)
+        Get database statistics
         
         Returns:
-            Saturation index 0-1
+            Dictionary with stats
         """
-        total_water = total_rainfall_mm + antecedent_mm
-        saturation = min(total_water / field_capacity_mm, 1.0)
-        return saturation
+        stats = {}
+        
+        # Total records
+        stats['total_records'] = self.session.query(WeatherData).count()
+        
+        # Date range
+        query = """
+            SELECT 
+                MIN(timestamp) as earliest,
+                MAX(timestamp) as latest
+            FROM weather_data_hourly
+        """
+        result = pd.read_sql(query, self.engine)
+        
+        if not result.empty:
+            stats['earliest_date'] = result.iloc[0]['earliest']
+            stats['latest_date'] = result.iloc[0]['latest']
+        
+        # Records per day
+        query = """
+            SELECT DATE(timestamp) as date, COUNT(*) as count
+            FROM weather_data_hourly
+            GROUP BY DATE(timestamp)
+            ORDER BY date DESC
+            LIMIT 10
+        """
+        stats['recent_days'] = pd.read_sql(query, self.engine)
+        
+        return stats
+    
 
+
+
+def insert_weather_data(config, df: pd.DataFrame) -> int:
+    """
+    Insert DataFrame into database
+    
+    Args:
+        config: Database configuration
+        df: DataFrame with weather data
+    
+    Returns:
+        Number of records inserted
+    """
+    if df.empty:
+        logger.warning("⚠ Empty DataFrame, nothing to insert")
+        return 0
+    
+    insert_query = """
+    INSERT INTO weather_data_hourly 
+        (station_id, timestamp, temperature_c, humidity_percent, 
+         pressure_hpa, wind_speed_kmh, gust_speed_kmh, precipitation_mm)
+    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+    ON CONFLICT (station_id, timestamp) DO NOTHING;
+    """
+    
+    inserted_count = 0
+    
+    try:
+        with psycopg2.connect(**config) as conn:
+            with conn.cursor() as cur:
+                # Convert DataFrame to list of tuples
+                records = df.to_records(index=False)
+                data_tuples = [tuple(row) for row in records]
+                
+                # Execute batch insert
+                cur.executemany(insert_query, data_tuples)
+                inserted_count = cur.rowcount
+                
+                conn.commit()
+                logger.info(f"✓ Inserted {inserted_count} records")
+                
+    except (psycopg2.DatabaseError, Exception) as error:
+        logger.error(f"✗ Insert error: {error}")
+        return 0
+    
+    return inserted_count
+
+
+def get_database_statistics(config):
+    """Get statistics about stored data"""
+    
+    queries = {
+        'total_records': "SELECT COUNT(*) FROM weather_data_hourly",
+        'date_range': """
+            SELECT 
+                MIN(timestamp) as earliest, 
+                MAX(timestamp) as latest,
+                COUNT(DISTINCT DATE(timestamp)) as days
+            FROM weather_data_hourly
+        """,
+        'recent_days': """
+            SELECT 
+                DATE(timestamp) as date,
+                COUNT(*) as records,
+                SUM(precipitation_mm) as total_precip_mm,
+                AVG(temperature_c) as avg_temp_c
+            FROM weather_data_hourly
+            GROUP BY DATE(timestamp)
+            ORDER BY date DESC
+            LIMIT 10
+        """
+    }
+    
+    stats = {}
+    
+    try:
+        with psycopg2.connect(**config) as conn:
+            with conn.cursor() as cur:
+                # Total records
+                cur.execute(queries['total_records'])
+                stats['total_records'] = cur.fetchone()[0]
+                
+                # Date range
+                cur.execute(queries['date_range'])
+                row = cur.fetchone()
+                stats['earliest_date'] = row[0]
+                stats['latest_date'] = row[1]
+                stats['days_covered'] = row[2]
+                
+                # Recent days
+                cur.execute(queries['recent_days'])
+                recent = cur.fetchall()
+                stats['recent_days'] = pd.DataFrame(
+                    recent, 
+                    columns=['date', 'records', 'total_precip_mm', 'avg_temp_c']
+                )
+                
+    except (psycopg2.DatabaseError, Exception) as error:
+        logger.error(f"✗ Statistics error: {error}")
+    
+    return stats
+
+
+def get_precipitation_data(config, start_date: datetime, end_date: datetime) -> pd.DataFrame:
+    """
+    Retrieve precipitation data for date range
+    
+    Args:
+        config: Database configuration
+        start_date: Start datetime
+        end_date: End datetime
+    
+    Returns:
+        DataFrame with timestamp and precipitation_mm
+    """
+    query = """
+    SELECT timestamp, precipitation_mm, temperature_c, humidity_percent
+    FROM weather_data_hourly
+    WHERE timestamp >= %s AND timestamp <= %s
+    ORDER BY timestamp
+    """
+    
+    try:
+        with psycopg2.connect(**config) as conn:
+            df = pd.read_sql_query(query, conn, params=(start_date, end_date))
+            logger.info(f"✓ Retrieved {len(df)} precipitation records")
+            return df
+    except (psycopg2.DatabaseError, Exception) as error:
+        logger.error(f"✗ Query error: {error}")
+        return pd.DataFrame()
+
+
+def calculate_antecedent_rainfall(config, target_date: datetime, days_back: int = 7) -> float:
+    """
+    Calculate cumulative rainfall before target date
+    
+    Args:
+        config: Database configuration
+        target_date: Reference date
+        days_back: Number of days to look back
+    
+    Returns:
+        Total precipitation in mm
+    """
+    start_date = target_date - timedelta(days=days_back)
+    
+    query = """
+    SELECT SUM(precipitation_mm) as total
+    FROM weather_data_hourly
+    WHERE timestamp >= %s AND timestamp < %s
+    """
+    
+    try:
+        with psycopg2.connect(**config) as conn:
+            with conn.cursor() as cur:
+                cur.execute(query, (start_date, target_date))
+                result = cur.fetchone()
+                total = result[0] if result[0] is not None else 0.0
+                
+                logger.info(f"✓ Antecedent rainfall ({days_back} days): {total:.1f} mm")
+                return float(total)
+                
+    except (psycopg2.DatabaseError, Exception) as error:
+        logger.error(f"✗ Calculation error: {error}")
+        return 0.0
