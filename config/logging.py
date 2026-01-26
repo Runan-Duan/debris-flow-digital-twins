@@ -4,6 +4,7 @@ from pathlib import Path
 from config.settings import settings
 
 
+
 def setup_logging():
     """Configure application logging"""
     

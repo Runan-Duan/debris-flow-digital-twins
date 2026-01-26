@@ -1,11 +1,13 @@
 import psycopg2
 from datetime import datetime, timedelta
 from config.database import load_config
+# from config.settings import settings
 
 
 class WeatherRepository:
     
     def __init__(self, config=None):
+        # database = settings.DATABASE_DIR / 'database.ini'
         self.config = config or load_config()
     
     def create_table(self):

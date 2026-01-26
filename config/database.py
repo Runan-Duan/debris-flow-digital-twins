@@ -3,7 +3,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from configparser import ConfigParser
-from config.settings import settings
+# from config.settings import settings
+
 
 def load_config(filename='database/database.ini', section='postgresql'):
     parser = ConfigParser()
@@ -21,6 +22,6 @@ def load_config(filename='database/database.ini', section='postgresql'):
     return config
 
 if __name__ == '__main__':
-    database = settings.DATABASE_DIR / 'database.ini'
-    config = load_config(filename=database)
+    # database = settings.DATABASE_DIR / 'database.ini'
+    config = load_config()
     print(config)

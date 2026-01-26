@@ -6,6 +6,7 @@ import logging
 import json
 from src.models.release_areas.saga_release_detector import SAGAReleaseDetector
 from config.settings import settings
+
 from config.logging import setup_logging
 
 logger = setup_logging()

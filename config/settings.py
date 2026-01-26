@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import List, Optional
 import warnings
 
+from functools import lru_cache
 
 class Settings(BaseSettings):
     """Application configuration settings"""
@@ -24,16 +25,16 @@ class Settings(BaseSettings):
     DATABASE_DIR: Path = Path("./database")
     
     # Weather
-    OPENWEATHER_API_KEY: Optional[str] = None
-    WEATHER_LOCATION_LAT: float = 0.0
-    WEATHER_LOCATION_LON: float = 0.0
-    WEATHER_UPDATE_INTERVAL: int = 1800
+    # OPENWEATHER_API_KEY: Optional[str] = None
+    # WEATHER_LOCATION_LAT: float = 0.0
+    # WEATHER_LOCATION_LON: float = 0.0
+    # WEATHER_UPDATE_INTERVAL: int = 1800
     
     # Sentinel-2
-    COPERNICUS_USERNAME: Optional[str] = None
-    COPERNICUS_PASSWORD: Optional[str] = None
-    SENTINEL_AOI_WKT: str = "POLYGON((0 0, 1 0, 1 1, 0 1, 0 0))"  # Default placeholder
-    SENTINEL_CHECK_INTERVAL: int = 86400
+    # COPERNICUS_USERNAME: Optional[str] = None
+    # COPERNICUS_PASSWORD: Optional[str] = None
+    # SENTINEL_AOI_WKT: str = "POLYGON((0 0, 1 0, 1 1, 0 1, 0 0))"  # Default placeholder
+    # SENTINEL_CHECK_INTERVAL: int = 86400
     
     # DEM
     DEM_RESOLUTION: float = 1.0
@@ -67,7 +68,7 @@ class Settings(BaseSettings):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         # Validate critical settings
-        self._validate_settings()
+        # self._validate_settings()
         
         # Create directories if they don't exist
         self.DATA_DIR.mkdir(exist_ok=True)
@@ -76,26 +77,32 @@ class Settings(BaseSettings):
         self.EXTERNAL_DATA_DIR.mkdir(parents=True, exist_ok=True)
         self.LOG_FILE.parent.mkdir(exist_ok=True)
     
-    def _validate_settings(self):
-        """Warn about missing required configuration"""
-        warnings.simplefilter("always")
+    # def _validate_settings(self):
+    #     """Warn about missing required configuration"""
+    #     warnings.simplefilter("always")
         
-        if not self.OPENWEATHER_API_KEY:
-            warnings.warn("OPENWEATHER_API_KEY is not set. Weather features will be disabled.")
+        # if not self.OPENWEATHER_API_KEY:
+        #     warnings.warn("OPENWEATHER_API_KEY is not set. Weather features will be disabled.")
         
-        if not self.COPERNICUS_USERNAME or not self.COPERNICUS_PASSWORD:
-            warnings.warn("COPERNICUS credentials not set. Sentinel-2 features will be disabled.")
+        # if not self.COPERNICUS_USERNAME or not self.COPERNICUS_PASSWORD:
+        #     warnings.warn("COPERNICUS credentials not set. Sentinel-2 features will be disabled.")
         
-        if self.WEATHER_LOCATION_LAT == 0.0 and self.WEATHER_LOCATION_LON == 0.0:
-            warnings.warn("Weather location is set to (0,0). Update WEATHER_LOCATION_LAT/LON.")
+        # if self.WEATHER_LOCATION_LAT == 0.0 and self.WEATHER_LOCATION_LON == 0.0:
+        #     warnings.warn("Weather location is set to (0,0). Update WEATHER_LOCATION_LAT/LON.")
 
+# @lru_cache
+# def get_settings() -> Settings:
+#     return Settings()
+settings = Settings()
 
 # Create singleton instance with error handling
-try:
-    settings = Settings()
-except Exception as e:
-    print(f"Error loading settings: {e}")
-    print("Using default settings with warnings...")
+# try:
+#     settings = Settings()
+# except Exception as e:
+#     print(f"Error loading settings: {e}")
+#     print("Using default settings with warnings...")
     # Create settings with defaults only
-    settings = Settings(_env_file=None)
-    settings._validate_settings()
+    # settings = Settings(_env_file=None)
+    # settings._validate_settings()
+
+
