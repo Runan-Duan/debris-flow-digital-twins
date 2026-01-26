@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Debris Flow Digital Twin - Grossglockner</title>
+
+  <script src="https://cesium.com/downloads/cesiumjs/releases/1.137/Build/Cesium/Cesium.js"></script>
+  <link href="https://cesium.com/downloads/cesiumjs/releases/1.137/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #1a1a1a;
+      color: #fff;
+      overflow: hidden;
+    }
+
+    #app { display: flex; height: 100vh; }
+
+    #sidebar {
+      width: 350px;
+      background: #2c3e50;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+
+    #sidebar-content { padding: 20px; }
+
+    h1 { font-size: 20px; margin-bottom: 20px; color: #3498db; }
+    h2 { font-size: 16px; margin: 15px 0 10px 0; color: #3498db; border-bottom: 1px solid #34495e; padding-bottom: 5px; }
+
+    .panel { background: #34495e; border-radius: 6px; padding: 12px; margin-bottom: 15px; }
+
+    .risk-badge { padding: 10px; border-radius: 4px; text-align: center; font-weight: bold; font-size: 16px; margin-bottom: 10px; }
+    .risk-LOW { background: #27ae60; }
+    .risk-MODERATE { background: #f39c12; }
+    .risk-HIGH { background: #e67e22; }
+    .risk-CRITICAL { background: #c0392b; }
+
+    .metric { display: flex; justify-content: space-between; padding: 6px 0; font-size: 13px; border-bottom: 1px solid #2c3e50; }
+    .metric label { color: #95a5a6; }
+    .metric span { color: #ecf0f1; font-weight: 500; }
+
+    .layer-control { display: flex; align-items: center; padding: 8px 0; }
+    .layer-control input { margin-right: 8px; }
+    .layer-control label { flex: 1; font-size: 13px; cursor: pointer; }
+
+    button { width: 100%; padding: 10px; margin: 5px 0; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 13px; }
+    button:hover { background: #2980b9; }
+    button:disabled { background: #7f8c8d; cursor: not-allowed; }
+
+    #map-container { flex: 1; position: relative; }
+    #cesiumContainer { width: 100%; height: 100%; }
+
+    .loading { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.8); padding: 20px 40px; border-radius: 8px; font-size: 16px; }
+    .error { background: #c0392b; padding: 10px; border-radius: 4px; margin: 10px 0; font-size: 12px; }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div id="sidebar">
+      <div id="sidebar-content">
+        <h1>Debris Flow Monitor</h1>
+
+        <div class="panel">
+          <h2>Current Risk</h2>
+          <div id="risk-display"><div class="loading">Loading...</div></div>
+        </div>
+
+        <div class="panel">
+          <h2>Weather Data</h2>
+          <div id="weather-display"><div class="loading">Loading...</div></div>
+        </div>
+
+        <div class="panel">
+          <h2>Map Layers</h2>
+          <div class="layer-control">
+            <input type="checkbox" id="layer-ortho" checked>
+            <label for="layer-ortho">Orthophoto (GeoServer)</label>
+          </div>
+          <div class="layer-control">
+            <input type="checkbox" id="layer-hillshade" checked>
+            <label for="layer-hillshade">DEM Hillshade (GeoServer)</label>
+          </div>
+          <div class="layer-control">
+            <input type="checkbox" id="layer-release" checked>
+            <label for="layer-release">Release Areas</label>
+          </div>
+          <div class="layer-control">
+            <input type="checkbox" id="layer-simulation" checked>
+            <label for="layer-simulation">Simulation Results</label>
+          </div>
+          <div class="layer-control">
+            <input type="checkbox" id="layer-osm" checked>
+            <label for="layer-osm">OSM Infrastructure</label>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2>Actions</h2>
+          <button onclick="updateData()">Refresh Weather Data</button>
+          <button onclick="calculateRisk()">Recalculate Risk</button>
+          <button onclick="resetView()">Reset Camera</button>
+        </div>
+
+        <div id="error-display"></div>
+      </div>
+    </div>
+
+    <div id="map-container">
+      <div id="cesiumContainer"></div>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = 'http://localhost:8000';
+
+    let viewer = null;
+    let layers = {};
+    let aoiBounds = null;
+
+    async function initApp() {
+      await loadAOIBounds();
+      await initCesium();
+      await loadData();
+      setupEventListeners();
+      setInterval(loadData, 300000);
+    }
+
+    async function loadAOIBounds() {
+      try {
+        const response = await fetch(`${API_BASE}/layers/bounds`);
+        aoiBounds = await response.json();
+        console.log('AOI Bounds:', aoiBounds);
+      } catch (e) {
+        console.error('Failed to load AOI bounds:', e);
+        aoiBounds = { west: 13.0, south: 47.0, east: 13.5, north: 47.5 };
+      }
+    }
+
+    async function initCesium() {
+      Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxN2U4ODQ4MC02YmE3LTQzZDMtYmZlMS0xNGE1NDVjYjVjY2QiLCJpZCI6MzU5MDI4LCJpYXQiOjE3NjI4MDE3MDB9.5HZG2c0iyHn_REC3zQ6cPJHqcfShc1_GX4lSeAE7s2U';
+
+      viewer = new Cesium.Viewer('cesiumContainer', {
+        terrain: await Cesium.Terrain.fromWorldTerrain(),
+        baseLayerPicker: false,
+        animation: false,
+        timeline: false,
+        homeButton: false,
+        navigationHelpButton: false
+      });
+
+      addOrthophotoLayer();
+      addHillshadeLayer();
+      await addReleaseAreasLayer();
+      await addSimulationLayer();
+      await addOSMLayer();
+
+      flyToAOI();
+    }
+
+    function addOrthophotoLayer() {
+      try {
+        layers.ortho = viewer.imageryLayers.addImageryProvider(
+          new Cesium.WebMapServiceImageryProvider({
+            url: 'http://localhost:8888/geoserver/wms',
+            layers: 'tirol:ortho_image',
+            parameters: {
+              service: 'WMS',
+              version: '1.1.1',
+              request: 'GetMap',
+              styles: '',
+              format: 'image/png',
+              transparent: true,
+              srs: 'EPSG:3857'
+            }
+          })
+        );
+        console.log('Orthophoto layer added');
+      } catch (e) {
+        console.error('Failed to load orthophoto:', e);
+      }
+    }
+
+    function addHillshadeLayer() {
+      try {
+        layers.hillshade = viewer.imageryLayers.addImageryProvider(
+          new Cesium.WebMapServiceImageryProvider({
+            url: 'http://localhost:8888/geoserver/wms',
+            layers: 'tirol:dtm_shd',
+            parameters: {
+              service: 'WMS',
+              version: '1.1.1',
+              request: 'GetMap',
+              styles: '',
+              format: 'image/png',
+              transparent: true,
+              srs: 'EPSG:3857'
+            }
+          })
+        );
+
+        if (layers.hillshade) {
+          viewer.imageryLayers.raiseToTop(layers.hillshade);
+          layers.hillshade.alpha = 0.4;
+        }
+        console.log('Hillshade layer added');
+      } catch (e) {
+        console.error('Failed to load hillshade:', e);
+      }
+    }
+
+    async function addReleaseAreasLayer() {
+      try {
+        const response = await fetch(`${API_BASE}/layers/release-areas`);
+        const geojson = await response.json();
+
+        if (geojson.features && geojson.features.length > 0) {
+          layers.release = await viewer.dataSources.add(
+            await Cesium.GeoJsonDataSource.load(geojson, {
+              stroke: Cesium.Color.RED,
+              fill: Cesium.Color.RED.withAlpha(0.3),
+              strokeWidth: 2
+            })
+          );
+          console.log('Release areas loaded:', geojson.features.length, 'features');
+        }
+      } catch (e) {
+        console.error('Failed to load release areas:', e);
+      }
+    }
+
+    async function addSimulationLayer() {
+      try {
+        const response = await fetch(`${API_BASE}/layers/simulation`);
+        const geojson = await response.json();
+
+        if (geojson.features && geojson.features.length > 0) {
+          layers.simulation = await viewer.dataSources.add(
+            await Cesium.GeoJsonDataSource.load(geojson, {
+              stroke: Cesium.Color.YELLOW,
+              fill: Cesium.Color.YELLOW.withAlpha(0.5),
+              strokeWidth: 2
+            })
+          );
+          console.log('Simulation loaded:', geojson.features.length, 'features');
+        }
+      } catch (e) {
+        console.error('Failed to load simulation:', e);
+      }
+    }
+
+    async function addOSMLayer() {
+      try {
+        const response = await fetch(`${API_BASE}/layers/osm`);
+        const geojson = await response.json();
+
+        if (geojson.features && geojson.features.length > 0) {
+          layers.osm = await viewer.dataSources.add(
+            await Cesium.GeoJsonDataSource.load(geojson, {
+              stroke: Cesium.Color.CYAN,
+              fill: Cesium.Color.CYAN.withAlpha(0.2),
+              strokeWidth: 1
+            })
+          );
+          console.log('OSM loaded:', geojson.features.length, 'features');
+        }
+      } catch (e) {
+        console.error('Failed to load OSM:', e);
+      }
+    }
+
+    function flyToAOI() {
+      if (!aoiBounds) return;
+
+      const rectangle = Cesium.Rectangle.fromDegrees(
+        aoiBounds.west,
+        aoiBounds.south,
+        aoiBounds.east,
+        aoiBounds.north
+      );
+
+      viewer.camera.flyTo({ destination: rectangle, duration: 2 });
+    }
+
+    async function loadData() {
+      await Promise.all([loadRiskData(), loadWeatherData()]);
+    }
+
+    async function loadRiskData() {
+      try {
+        const response = await fetch(`${API_BASE}/risk/current`);
+        const data = await response.json();
+
+        if (data.status === 'success') {
+          displayRisk(data.risk_assessment);
+        }
+      } catch (e) {
+        displayError('Failed to load risk data');
+        console.error(e);
+      }
+    }
+
+    async function loadWeatherData() {
+      try {
+        const response = await fetch(`${API_BASE}/weather/latest`);
+        const data = await response.json();
+
+        if (data.status === 'success') {
+          displayWeather(data.data);
+        }
+      } catch (e) {
+        displayError('Failed to load weather data');
+        console.error(e);
+      }
+    }
+
+    function displayRisk(risk) {
+      const html = `
+        <div class="risk-badge risk-${risk.risk_level}">${risk.risk_level}</div>
+        <div class="metric">
+          <label>Exceedance:</label>
+          <span>${risk.exceedance_ratio?.toFixed(2) || 'N/A'}</span>
+        </div>
+        <div class="metric">
+          <label>Intensity:</label>
+          <span>${risk.intensity_mmh?.toFixed(1) || 'N/A'} mm/h</span>
+        </div>
+        <div class="metric">
+          <label>Duration:</label>
+          <span>${risk.duration_h?.toFixed(1) || 'N/A'} h</span>
+        </div>
+        <div class="metric">
+          <label>Antecedent (7d):</label>
+          <span>${risk.antecedent_7d_mm?.toFixed(1) || 'N/A'} mm</span>
+        </div>
+        <div class="metric">
+          <label>Saturation:</label>
+          <span>${(risk.saturation * 100)?.toFixed(0) || 'N/A'}%</span>
+        </div>
+      `;
+
+      document.getElementById('risk-display').innerHTML = html;
+    }
+
+    function displayWeather(data) {
+      if (!data || data.length === 0) {
+        document.getElementById('weather-display').innerHTML = '<p>No data</p>';
+        return;
+      }
+
+      const latest = data[0];
+      const last24h = data.slice(0, 24);
+      const totalPrecip = last24h.reduce((sum, d) => sum + (d.precipitation_mm || 0), 0);
+
+      const html = `
+        <div class="metric">
+          <label>Temperature:</label>
+          <span>${latest.temperature_c?.toFixed(1) || 'N/A'}°C</span>
+        </div>
+        <div class="metric">
+          <label>Humidity:</label>
+          <span>${latest.humidity_percent?.toFixed(0) || 'N/A'}%</span>
+        </div>
+        <div class="metric">
+          <label>24h Rainfall:</label>
+          <span>${totalPrecip.toFixed(1)} mm</span>
+        </div>
+      `;
+
+      document.getElementById('weather-display').innerHTML = html;
+    }
+
+    function displayError(msg) {
+      const errorDiv = document.getElementById('error-display');
+      errorDiv.innerHTML = `<div class="error">${msg}</div>`;
+      setTimeout(() => errorDiv.innerHTML = '', 5000);
+    }
+
+    function setupEventListeners() {
+      document.getElementById('layer-ortho').addEventListener('change', (e) => {
+        if (layers.ortho) layers.ortho.show = e.target.checked;
+      });
+
+      document.getElementById('layer-hillshade').addEventListener('change', (e) => {
+        if (layers.hillshade) layers.hillshade.show = e.target.checked;
+      });
+
+      document.getElementById('layer-release').addEventListener('change', (e) => {
+        if (layers.release) layers.release.show = e.target.checked;
+      });
+
+      document.getElementById('layer-simulation').addEventListener('change', (e) => {
+        if (layers.simulation) layers.simulation.show = e.target.checked;
+      });
+
+      document.getElementById('layer-osm').addEventListener('change', (e) => {
+        if (layers.osm) layers.osm.show = e.target.checked;
+      });
+    }
+
+    async function updateData() {
+      try {
+        const btn = event.target;
+        btn.disabled = true;
+        btn.textContent = 'Updating...';
+        
+        const response = await fetch(`${API_BASE}/weather/scrape?days=1`, { method: 'POST' });
+        const data = await response.json();
+
+        if (data.status === 'success') {
+          await loadData();
+          alert(`Updated: ${data.records_inserted} records`);
+        }
+        
+        btn.disabled = false;
+        btn.textContent = 'Refresh Weather Data';
+      } catch (e) {
+        displayError('Failed to update data');
+        console.error(e);
+        event.target.disabled = false;
+        event.target.textContent = 'Refresh Weather Data';
+      }
+    }
+
+    async function calculateRisk() {
+      await loadRiskData();
+    }
+
+    function resetView() {
+      flyToAOI();
+    }
+
+    window.addEventListener('load', initApp);
+  </script>
+</body>
+</html>
